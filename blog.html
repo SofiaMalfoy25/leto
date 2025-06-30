@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регионы России для туризма</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">Туризм России</div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="main.html">Главная</a></li>
+                    <li><a href="blog.html" class="active">Регионы</a></li>
+                    <li><a href="tours.html">Туры</a></li>
+                    <li><a href="reviews.html">Отзывы</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Регионы России</h1>
+            <p>Выберите интересующий вас регион для просмотра доступных туров</p>
+        </div>
+    </section>
+
+    <section class="regions">
+        <div class="container">
+            <div class="regions-grid">
+                <div class="region-card" data-region="central">
+                    <img src="https://via.placeholder.com/400x300?text=Центральная+Россия" alt="Центральная Россия">
+                    <h3>Центральная Россия</h3>
+                    <p>Москва, Золотое кольцо, Смоленск</p>
+                    <a href="tours.html?region=central" class="btn">Смотреть туры</a>
+                </div>
+                <div class="region-card" data-region="northwest">
+                    <img src="https://via.placeholder.com/400x300?text=Северо-Запад" alt="Северо-Запад">
+                    <h3>Северо-Запад</h3>
+                    <p>Санкт-Петербург, Карелия, Кольский полуостров</p>
+                    <a href="tours.html?region=northwest" class="btn">Смотреть туры</a>
+                </div>
+                <div class="region-card" data-region="south">
+                    <img src="https://via.placeholder.com/400x300?text=Юг+России" alt="Юг России">
+                    <h3>Юг России</h3>
+                    <p>Сочи, Кавказ, Домбай, Красная Поляна</p>
+                    <a href="tours.html?region=south" class="btn">Смотреть туры</a>
+                </div>
+                <div class="region-card" data-region="kavkaz">
+                    <img src="https://via.placeholder.com/400x300?text=Кавказ" alt="Кавказ">
+                    <h3>Северо-Кавказ</h3>
+                    <p>дагестан, Ингушетия, Северная Осетия, Чечня</p>
+                    <a href="tours.html?region=kavkaz" class="btn">Смотреть туры</a>
+                </div>
+                <div class="region-card" data-region="ural">
+                    <img src="https://via.placeholder.com/400x300?text=Урал" alt="Урал">
+                    <h3>Урал</h3>
+                    <p>Екатеринбург, Челябинск, Пермь</p>
+                    <a href="tours.html?region=ural" class="btn">Смотреть туры</a>
+                </div>
+                <div class="region-card" data-region="siberia">
+                    <img src="https://via.placeholder.com/400x300?text=Сибирь" alt="Сибирь">
+                    <h3>Сибирь</h3>
+                    <p>Байкал, Алтай, Красноярск</p>
+                    <a href="tours.html?region=siberia" class="btn">Смотреть туры</a>
+                </div>
+                <div class="region-card" data-region="far-east">
+                    <img src="https://via.placeholder.com/400x300?text=Дальний+Восток" alt="Дальний Восток">
+                    <h3>Дальний Восток</h3>
+                    <p>Камчатка, Владивосток, Сахалин</p>
+                    <a href="tours.html?region=far-east" class="btn">Смотреть туры</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Туризм России. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
