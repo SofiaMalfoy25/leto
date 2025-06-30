@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регионы России для туризма | Туризм России</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2a5f8a;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --text: #333;
+            --text-light: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            padding: 10px 0;
+            background: rgba(42,95,138,0.98);
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav li {
+            margin-left: 30px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+        }
+        
+        .nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav a:hover:after, .nav a.active:after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            height: 50vh;
+            min-height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1518632617565-d1a82f7a1b72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            margin-top: 70px;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .page-header p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        /* Regions Section */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .regions {
+            background-color: white;
+        }
+        
+        .regions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .region-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .region-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .region-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .region-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .region-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .region-card-content {
+            padding: 20px;
+        }
+        
+        .region-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .region-card p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .regions-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 42px;
+            }
+            
+            .page-header p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background-color: rgba(42,95,138,0.98);
+                transition: all 0.5s ease;
+                padding: 20px 0;
+            }
+            
+            .nav.active {
+                left: 0;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav li {
+                margin: 15px 0;
+            }
+            
+            .page-header {
+                min-height: 350px;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                min-height: 300px;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .regions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">Туризм <span>России</span></div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="{{ url_for('main') }}">Главная</a></li>
+                    <li><a href="{{ url_for('blog') }}" class="active">Регионы</a></li>
+                    <li><a href="{{ url_for('tours') }}">Туры</a></li>
+                    <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
+                    <li><a href="{{ url_for('trends') }}">Тренды</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Регионы России</h1>
+            <p>Откройте для себя уникальные уголки нашей необъятной страны - от древних городов до дикой природы</p>
+        </div>
+    </section>
+
+    <section class="section regions">
+        <div class="container">
+            <h2 class="section-title">Исследуйте разнообразие России</h2>
+            <div class="regions-grid">
+                <div class="region-card" data-region="central">
+                    <img src="https://images.unsplash.com/photo-1513326738677-b964603b136d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Центральная Россия">
+                    <div class="region-card-content">
+                        <h3>Центральная Россия</h3>
+                        <p>Сердце страны с богатой историей и культурой</p>
+                        <a href="tours.html?region=central" class="btn">Смотреть туры</a>
+                    </div>
+                </div>
+                <div class="region-card" data-region="northwest">
+                    <img src="Img/zapad.jpg" alt="Северо-Запад">
+                    <div class="region-card-content">
+                        <h3>Северо-Запад</h3>
+                        <p>Балтика, северные пейзажи и имперское наследие</p>
+                        <a href="tours.html?region=northwest" class="btn">Смотреть туры</a>
+                    </div>
+                </div>
+                <div class="region-card" data-region="south">
+                    <img src="https://masterpiecer-images.s3.yandex.net/256eb17845cd11eea969f613a19d9dde:upscaled" alt="Юг России">
+                    <div class="region-card-content">
+                        <h3>Юг России</h3>
+                        <p>Тёплое море, горы и виноградники</p>
+                        <a href="tours.html?region=south" class="btn">Смотреть туры</a>
+                    </div>
+                </div>
+                <div class="region-card" data-region="kavkaz">
+                    <img src="Img/kavkaz.jpg" alt="Кавказ">
+                    <div class="region-card-content">
+                        <h3>Северный Кавказ</h3>
+                        <p>Высокие горы, древние традиции и адреналин</p>
+                        <a href="tours.html?region=kavkaz" class="btn">Смотреть туры</a>
+                    </div>
+                </div>
+                <div class="region-card" data-region="siberia">
+                    <img src="https://avatars.mds.yandex.net/i?id=b3e799f8bb938a5b322f2c974390ae6a_l-5160870-images-thumbs&n=13" alt="Сибирь">
+                    <div class="region-card-content">
+                        <h3>Сибирь</h3>
+                        <p>Бескрайние просторы, тайга и экстремальные температуры</p>
+                        <a href="tours.html?region=siberia" class="btn">Смотреть туры</a>
+                    </div>
+                </div>
+                <div class="region-card" data-region="far-east">
+                    <img src="https://avatars.mds.yandex.net/i?id=a86f260af83142c8d745a9a11b6ba8e6_l-5245037-images-thumbs&n=13" alt="Дальний Восток">
+                    <div class="region-card-content">
+                        <h3>Дальний Восток</h3>
+                        <p>Камчатка, Владивосток, Сахалин – вулканы, гейзеры и тихоокеанские пейзажи на краю земли.</p>
+                        <a href="tours.html?region=far-east" class="btn">Смотреть туры</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-vk"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>© 2025 Туризм России. Все права защищены.</p>
+            <p>Откройте для себя Россию заново!</p>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.nav');
+        
+        menuToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            menuToggle.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Animation on scroll for region cards
+        function animateCards() {
+            const cards = document.querySelectorAll('.region-card');
+            const windowHeight = window.innerHeight;
+            
+            cards.forEach((card, index) => {
+                const cardPosition = card.getBoundingClientRect().top;
+                const animationDelay = index * 0.1;
+                
+                if (cardPosition < windowHeight - 100) {
+                    card.classList.add('animated');
+                    card.style.transitionDelay = `${animationDelay}s`;
+                }
+            });
+        }
+        
+        // Initialize animations
+        window.addEventListener('load', animateCards);
+        window.addEventListener('scroll', animateCards);
+        
+        // Smooth scrolling for all links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

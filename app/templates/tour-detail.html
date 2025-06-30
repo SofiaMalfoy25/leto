@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали тура | Туризм России</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2a5f8a;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --text: #333;
+            --text-light: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            padding: 10px 0;
+            background: rgba(42,95,138,0.98);
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav li {
+            margin-left: 30px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+        }
+        
+        .nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav a:hover:after, .nav a.active:after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            height: 50vh;
+            min-height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        var(--header-image) no-repeat center center/cover;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            margin-top: 70px;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .page-header p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        /* Breadcrumbs */
+        .breadcrumbs {
+            padding: 15px 0;
+            background-color: #f8f9fa;
+            margin-top: 70px;
+        }
+        
+        .breadcrumbs ul {
+            display: flex;
+            list-style: none;
+            font-size: 14px;
+        }
+        
+        .breadcrumbs li {
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .breadcrumbs li:after {
+            content: '›';
+            margin-left: 10px;
+            color: var(--text-light);
+        }
+        
+        .breadcrumbs li:last-child:after {
+            display: none;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumbs a:hover {
+            color: var(--accent);
+        }
+        
+        .breadcrumbs span {
+            color: var(--text-light);
+        }
+        
+        /* Tour Detail Section */
+        .section {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .tour-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            color: var(--text-light);
+            font-size: 18px;
+            flex-wrap: wrap;
+        }
+        
+        .tour-meta span {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        
+        .tour-meta i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        .tour-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .tour-gallery {
+            position: relative;
+        }
+        
+        .main-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .main-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .main-image:hover img {
+            transform: scale(1.03);
+        }
+        
+        .image-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 2;
+        }
+        
+        .thumbnails {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .thumbnails img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .thumbnails img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-color: var(--accent);
+        }
+        
+        .thumbnails img.active {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tour-info h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin: 25px 0 15px;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .tour-info h2:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .tour-info p {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .tour-program {
+            margin-bottom: 30px;
+        }
+        
+        .program-day {
+            margin-bottom: 20px;
+            border-left: 3px solid var(--accent);
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .program-day h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .program-day h3:before {
+            content: '\f073';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .program-day p {
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .program-day p:before {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 12px;
+        }
+        
+        .tour-includes {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .tour-includes li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .tour-includes li:before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        
+        /* Price Box */
+        .price-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .price-box .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .price-box .price small {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+        
+        .price-box .per-person {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(42, 95, 138, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d4b75;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tour-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        
+        /* Booking Form */
+        .booking-form {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .booking-form h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 95, 138, 0.1);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .tour-detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tour-gallery {
+                order: 1;
+            }
+            
+            .tour-info {
+                order: 2;
+            }
+            
+            .footer .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background-color: rgba(42,95,138,0.98);
+                transition: all 0.5s ease;
+                padding: 20px 0;
+            }
+            
+            .nav.active {
+                left: 0;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav li {
+                margin: 15px 0;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .tour-meta {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+            
+            .tour-actions {
+                flex-direction: column;
+            }
+            
+            .footer .container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .page-header p {
+                font-size: 18px;
+            }
+            
+            .tour-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">Туризм <span>России</span></div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="main.html">Главная</a></li>
+                    <li><a href="blog.html">Регионы</a></li>
+                    <li><a href="tours.html">Туры</a></li>
+                    <li><a href="reviews.html">Отзывы</a></li>
+                    <li><a href="trends.html">Тренды</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header" id="tour-header">
+        <div class="container">
+            <h1 id="tour-title">Название тура</h1>
+            <p id="tour-short-description">Краткое описание тура</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="tour-meta">
+                <span id="tour-duration"><i class="fas fa-calendar-alt"></i> Длительность: </span>
+                <span id="tour-region"><i class="fas fa-map-marker-alt"></i> Регион: </span>
+                <span id="tour-type"><i class="fas fa-tag"></i> Тип: </span>
+                <span id="tour-price"><i class="fas fa-ruble-sign"></i> Цена: </span>
+            </div>
+
+            <div class="tour-detail-grid">
+                <div class="tour-gallery">
+                    <div class="main-image">
+                        <img src="" alt="Изображение тура" id="main-image">
+                    </div>
+                    <div class="thumbnails" id="thumbnails-container">
+                        <!-- Thumbnails will be added dynamically -->
+                    </div>
+                </div>
+
+                <div class="tour-info">
+
+                    <h2>Описание тура</h2>
+                    <p id="tour-description">Загрузка описания...</p>
+
+                    <h2>Программа тура</h2>
+                    <div id="tour-program" class="tour-program">
+                        <!-- Program days will be added dynamically -->
+                    </div>
+
+                    <h2>Включено в стоимость</h2>
+                    <ul id="tour-includes" class="tour-includes">
+                        <!-- Included items will be added dynamically -->
+                    </ul>
+
+                    <div class="tour-actions">
+                        <a href="reviews.html?tour=${currentTour.id}" class="btn btn-secondary">Посмотреть отзывы</a>
+                    </div>
+
+                    <div class="booking-form" id="booking-form" style="display: none;">
+                        <h3>Забронировать тур</h3>
+                        <form id="tour-booking-form">
+                            <div class="form-group">
+                                <label for="name">Ваше имя</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Телефон</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Дата тура</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="persons">Количество человек</label>
+                                <select id="persons" name="persons">
+                                    <option value="1">1</option>
+                                    <option value="2" selected>2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5+">5+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="comments">Дополнительные пожелания</label>
+                                <textarea id="comments" name="comments" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-vk"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>© 2025 Туризм России. Все права защищены.</p>
+            <p>Путешествуйте с нами и открывайте Россию заново!</p>
+        </div>
+    </footer>
+    <script>
+        // Mock data from your provided JS
+        const mockTours = [
+        {
+            id: 1,
+            title: 'Золотое кольцо',
+            duration: '7 дней',
+            price: 45000,            
+            region: 'central',
+            type: 'excursion',
+            image: 'Img/goldring.png',
+            description: 'Тур по древним городам Северо-Восточной Руси, сохранившим уникальные памятники истории и культуры России. В программе: Сергиев Посад, Переславль-Залесский, Ростов Великий, Ярославль, Кострома, Иваново, Суздаль и Владимир.',
+            program: [
+                { day: 'День 1: Москва', description: 'Утро: прибытие в Москву и размещение в отеле.</p> День: обзорная экскурсия по Москве (Красная площадь, Кремль, Храм Василия Блаженного).</p> Вечер: ужин в ресторане с традиционной русской кухней.' },
+                { day: 'День 2: Сергиев Посад', description: 'Утро: завтрак в отеле, выезд в Сергиев Посад (70 км).</p> День: посещение Троице-Сергиевой лавры, экскурсия по монастырю.</p> Вечер: возвращение в Москву, свободное время.' },
+                { day: 'День 3: Ростов Великий', description: 'Утро: завтрак, выезд в Ростов Великий (200 км).</p> День: экскурсия по Ростовскому кремлю и музею "Ростовский фарфор".</p> Вечер: ночь в Ростове, ужин в местном ресторане.' },
+                { day: 'День 4: Ярославль', description: 'Утро: завтрак, выезд в Ярославль (60 км).</p> День: обзорная экскурсия по Ярославлю (Церковь Ильи Пророка, набережная Волги).</p> Вечер: ужин и свободное время.' },
+                { day: 'День 5: Кострома', description: 'Утро: завтрак, выезд в Кострому (100 км).</p> День: посещение Ипатьевского монастыря и музея "Снегирь".</p> Вечер: ночь в Костроме, ужин.' },
+                { day: 'День 6: Иваново', description: 'Утро: завтрак, выезд в Иваново (70 км).</p> День: экскурсия по городу, посещение музея текстиля.</p> Вечер: возвращение в Кострому, ужин.' },
+                { day: 'День 7: Владимир', description: 'Утро: завтрак, выезд во Владимир (150 км).</p> День: посещение Успенского собора и Золотых ворот.</p> Вечер: возвращение в Москву, завершение тура.' }
+            ],
+            includes: [
+                'Проживание в отелях 3 звезды',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус',
+                'Экскурсии с профессиональными гидами'
+            ],
+            thumbnails: [
+                'https://www.yarnews.net/files/1/1000/97355.jpg',
+                'Img/золотое кольцо 2.png',
+                'Img/золотое кольцо 3.jpg'
+            ]
+        },
+        {
+            id: 2,
+            title: 'Путешествие по Карелии',
+            duration: '5 дней',
+            price: 38000,
+            region: 'northwest',
+            type: 'active',
+            image: 'Img/karelia.png',
+            description: 'Карелия — один из самых живописных регионов России, где можно увидеть волшебное северное сияние, бескрайние леса, кристально чистые озера и древние памятники природы. Этот тур идеально подойдет для любителей приключений, романтиков и тех, кто хочет погрузиться в атмосферу загадочного Севера.',
+            program: [
+                { day: 'День 1: Санкт-Петербург', description: 'Утро: прибытие в Санкт-Петербург, размещение в отеле.</p> День: обзорная экскурсия по городу (Невский проспект, Эрмитаж, Спас на Крови).</p> Вечер: ужин в ресторане с карельской кухней.' },
+                { day: 'День 2: Петрозаводск', description: 'Утро: завтрак, выезд в Петрозаводск (около 400 км).</p> День: экскурсия по Петрозаводску (набережная Онежского озера, музей изобразительных искусств).</p> Вечер: ужин и свободное время.' },
+                { day: 'День 3: Кижи', description: 'Утро: завтрак, выезд на пароме к острову Кижи.</p>День: посещение Кижского погоста, знакомство с деревянной архитектурой (Церковь Преображения Господня).</p>Вечер: возвращение в Петрозаводск, ужин.' },
+                { day: 'День 4: Сортавала и Рускеала', description: 'Утро: завтрак, выезд в Сортавалу (160 км).</p> День: обзорная экскурсия по Сортавале, посещение водопада Ахвенкоски. Далее поездка в парк "Рускеала" для осмотра мраморного каньона.</p>Вечер: ночь в Сортавале, ужин в местном ресторане.' },
+                { day: 'День 5: Возвращение в Санкт-Петербург', description: 'Утро: завтрак, выезд обратно в Санкт-Петербург (около 400 км).</p> День: свободное время для покупок или дополнительных экскурсий.</p> Вечер: прощальный ужин и завершение тура.' }
+            ],
+            includes: [
+                'Проживание в отелях 3 звезды',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: Возможность продления тура или добавления дополнительных экскурсий по желанию'
+            ],
+            thumbnails: [
+                'Img/карелия 1.webp',
+                'Img/карелия 2.jpg',
+                'Img/карелия 3.webp'
+            ]
+        },
+        {
+            id: 3,
+            title: 'Сибирское путешествие',
+            duration: '10 дней',
+            price: 75000,
+            region: 'siberia',
+            type: 'active',
+            image: 'https://avatars.mds.yandex.net/i?id=b3e799f8bb938a5b322f2c974390ae6a_l-5160870-images-thumbs&n=13',
+            description: '«Сибирское путешествие» — это познавательный или приключенческий тур по Сибири, который может включать посещение природных достопримечательностей, исторических мест и знакомство с культурой этого региона.',
+            program: [
+                { day: 'День 1: Новосибирск', description: 'Утро: прибытие в Новосибирск, размещение в отеле.</p>  День: обзорная экскурсия по городу (Новосибирский зоопарк, театр оперы и балета).</p> Вечер: ужин в ресторане с сибирской кухней.' },
+                { day: 'День 2: Барнаул', description: 'Утро: завтрак, выезд в Барнаул (220 км).</p> День: посещение исторического центра Барнаула (Музей истории Алтайского края, Пролетарский мост).</p> Вечер: ужин и ночь в Барнауле.' },
+                { day: 'День 3: Горно-Алтайск', description: 'Утро: завтрак, выезд в Горно-Алтайск (200 км).</p> День: экскурсия по Горно-Алтайску (Музей алтайской культуры, смотровая площадка на горе Чике-Таман).</p> Вечер: ужин и ночь в Горно-Алтайске.' },
+                { day: 'День 4: Алтайский заповедник', description: 'Утро: завтрак, выезд в Алтайский заповедник (50 км).</p> День: экскурсия по заповеднику (походы, наблюдение за дикой природой).</p> Вечер: ужин в традиционном алтайском стиле, ночь в гостинице у заповедника.' },
+                { day: 'День 5: Бийск', description: 'Утро: завтрак, выезд в Бийск (150 км).</p> День: посещение Бийского краеведческого музея и парка "Соловьиная роща".</p> Вечер: ужин и ночь в Бийске.' },
+                { day: 'День 6: Томск', description: 'Утро: завтрак, выезд в Томск (250 км).</p> День: обзорная экскурсия по Томску (Томский государственный университет, деревянные дома).</p> Вечер: ужин и ночь в Томске.' },
+                { day: 'День 7: Кемерово', description: 'Утро: завтрак, выезд в Кемерово (100 км).</p> День: посещение Кемеровского областного музея изобразительных искусств и парка "Сосновый бор".</p> Вечер: ужин и ночь в Кемерово.' },
+                { day: 'День 8: Красноярск', description: 'Утро: завтрак, выезд в Красноярск (200 км).</p> День: обзорная экскурсия по Красноярску (Красноярская крепость, Столбы).</p> Вечер: ужин и ночь в Красноярске.' },
+                { day: 'День 9: Енисейский район', description: 'Утро: завтрак, выезд в Енисейский район.</p> День: экскурсия по Енисею (прогулка на катере, рыбалка).</p> Вечер: ужин на природе, ночь в палаточном лагере или гостинице.' },
+                { day: 'День 10: Возвращение', description: 'Утро: завтрак, свободное время для покупок сувениров.</p> День: возвращение в Новосибирск, прощальный обед.</p> Вечер: отъезд.' }
+            ],
+            includes: [
+                'Проживание в отелях 3 звезды',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: Возможность продления тура или добавления дополнительных экскурсий по желанию'
+            ],
+            thumbnails: [
+                'Img/сибирь 1.jpg',
+                'Img/сибирь 2.jpg',
+                'Img/сибирь 3.webp'
+            ]
+        },
+        {
+            id: 4,
+            title: 'Сказочный Алтай',
+            duration: '6 дней',
+            price: 75000,
+            region: 'siberia',
+            type: 'active',
+            image: 'Img/алтай.jpg',
+            description: '"Сказочный Алтай" – это увлекательное путешествие по одному из самых живописных регионов России, где вас ждут горные пейзажи, чистейшие озёра, густые леса и богатая культура.',
+            program: [
+                { day: 'День 1: Горно-Алтайск', description: 'Утро: прибытие в Горно-Алтайск, размещение в отеле.</p> День: обзорная экскурсия по Горно-Алтайску (музей истории Алтая, памятник Алтайскому духу).</p> Вечер: ужин в национальном ресторане с блюдами алтайской кухни.' },
+                { day: 'День 2: Алтайский заповедник', description: 'Утро: завтрак, выезд в Алтайский заповедник (30 км).</p> День: экскурсия по заповеднику, знакомство с флорой и фауной региона, пешие прогулки.</p> Вечер: возвращение в Горно-Алтайск, ужин и ночь в отеле.' },
+                { day: 'День 3: Озеро Ая', description: 'Утро: завтрак, выезд к озеру Ая (40 км).</p> День: прогулка по озеру на катере, купание, отдых на пляже. Возможность попробовать водные виды спорта.</p> Вечер: ужин на берегу озера, ночь в гостинице у озера.' },
+                { day: 'День 4: Шебалино', description: 'Утро: завтрак, выезд в Шебалино (50 км).</p> День: посещение природного парка "Шебалинский" — пешие маршруты, фотосессии на фоне водопадов и живописных пейзажей.</p> Вечер: ужин и ночь в уютном отеле в Шебалино.' },
+                { day: 'День 5: Чуйский тракт и Курайская степь', description: 'Утро: завтрак, выезд по Чуйскому тракту (100 км).</p> День: остановка на смотровых площадках, фотографирование горных пейзажей и степей. Посещение исторических мест вдоль тракта.</p> Вечер: ужин в кемпинге на природе с костром, ночь в палатках или домиках.' },
+                { day: 'День 6: Кош-Агач', description: 'Утро: завтрак, выезд в Кош-Агач (60 км).</p> День: посещение местных достопримечательностей (деревня Кош-Агач, знакомство с культурой местных народов).</p> Вечер: возвращение в Горно-Алтайск, прощальный ужин и завершение тура.' }
+            ],
+            includes: [
+                'Проживание в отелях и гостевых домах',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: Возможность организовать мастер-классы по традиционным алтайским ремеслам (например, изготовление бижутерии из природных материалов)'
+            ],
+            thumbnails: [
+                'Img/алтай1.jpg',
+                'Img/алтай2.jpg',
+                'Img/алтай3.jpg'
+            ]
+        },
+        {
+            id: 5,
+            title: 'Дагестан',
+            duration: '7 дней',
+            price: 50000,
+            region: 'kavkaz',
+            type: 'active',
+            image: 'Img/дагестан.webp',
+            description: 'Тур по Дагестану — это отличная возможность познакомиться с уникальной культурой, природой и традициями этого удивительного региона России. Дагестан богат историческими достопримечательностями, горными пейзажами, древними аулами и гостеприимными людьми.',
+            program: [
+                { day: 'День 1: Махачкала', description: 'Утро: прибытие в Махачкалу, размещение в отеле.</p> День: обзорная экскурсия по городу (памятник "Танец огня", мечеть "Султан Ахмед").</p> Вечер: ужин в национальном ресторане с дагестанскими блюдами.' },
+                { day: 'День 2: Сулакский каньон', description: 'Утро: завтрак, выезд к Сулакскому каньону (70 км).</p> День: прогулка по каньону, возможность покататься на катере по реке Сулак, фотографирование с обзорных площадок.</p> Вечер: ужин в кафе с видом на каньон, ночь в гостинице рядом.' },
+                { day: 'День 3: Дербент', description: 'Утро: завтрак, выезд в Дербент (120 км).</p> День: посещение Нарын-калы (Дербентская крепость), экскурсия по старому городу и музеям.</p> Вечер: ужин в местном ресторане, ночь в отеле в Дербенте.' },
+                { day: 'День 4: Гергебиль"', description: 'Утро: завтрак,  выезд в Гергебиль (80 км).</p> День: прогулка по живописным горам, посещение водопадов и пейзажей, знакомство с культурой местного населения.</p> Вечер: ужин в горном ауле, ночь в гостевом доме.' },
+                { day: 'День 5: Хунзах', description: 'Утро: завтрак, выезд в Хунзах (60 км).</p> День: эЭкскурсия по историческим местам (гробницы и крепости), пешие маршруты по живописным тропам.</p> Вечер: ужин с традиционными блюдами, ночь в гостинице.' },
+                { day: 'День 6: Лезгинский национальный парк', description: 'Утро: завтрак, выезд в Лезгинский национальный парк (90 км).</p> День: пешие прогулки по парку, наблюдение за дикой природой и уникальной флорой.</p> Вечер: ужин на природе с костром, ночь в палаточном лагере или базовом лагере.' },
+                { day: 'День 7: Каспийское море', description: 'Утро: завтрак, выезд к Каспийскому морю (100 км).</p> День: отдых на пляже, купание и водные виды спорта.</p>Вечер: прощальный ужин в ресторане на берегу моря, завершение тур.' }
+            ],
+            includes: [
+                'Проживание в отелях и гостевых домах',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: возможность организовать мастер-классы по традиционным дагестанским ремеслам (например, изготовление керамики или ткачество)'
+            ],
+            thumbnails: [
+                'Img/дагестан 1.jpg',
+                'Img/дагестан 2.webp',
+                'Img/дагестан 3.webp'
+            ]
+        },
+        {
+            id: 6,
+            title: 'Северная Осетия',
+            duration: '6 дней',
+            price: 45000,
+            region: 'kavkaz',
+            type: 'active',
+            image: 'Img/osetia.webp',
+            description: 'Северная Осетия — это живописный регион на Северном Кавказе, богатый природными достопримечательностями, древней историей и гостеприимными традициями.',
+            program: [
+                { day: 'День 1: Владикавказ', description: 'Утро: прибытие во Владикавказ, размещение в отеле.</p>День: обзорная экскурсия по городу (площадь Свободы, памятник "Скорбящая мать", Центральный рынок).</p>Вечер: ужин в ресторане с осетинской кухней.' },
+                { day: 'День 2: Переезд на Ольхон', description: 'Утро: завтрак, выезд в Аланию (30 км).</p>День: посещение исторических памятников (Аланский храм, крепость), прогулка по старому городу.</p>После обеда: поездка в Архонскую долину, знакомство с природой и культурой региона.</p>Вечер: ужин в традиционном ауле, ночь в гостевом доме.' },
+                { day: 'День 3: Цейское ущелье', description: 'Утро: завтрак, выезд в Цейское ущелье (40 км).</p>День: пеший поход по ущелью, осмотр природных достопримечательностей и водопадов.</p>Вечер: ужин на природе с шашлыками, ночь в гостинице в Цее.' },
+                { day: 'День 4: Казбек (по возможности)', description: 'Утро: завтрак, выезд к Казбеку (по погодным условиям).</p>День: прогулка к подножию горы, возможность сделать фото на фоне величественного пика.</p>После обеда: возвращение во Владикавказ, свободное время для отдыха.</p>Вечер: ужин в ресторане, ночь в отеле.' },
+                { day: 'День 5: Фарнский водопад', description: 'Утро: завтрак, выезд к Фарнскому водопаду (50 км).</p>День: прогулка к водопаду, возможность искупаться и насладиться природой.</p>После обеда: возвращение во Владикавказ, посещение музея-заповедника "Кавказская Осетия".</p>Вечер: ужин в ресторане с осетинскими пирогами.' },
+                { day: 'День 6: Владикавказ', description: 'Утро: завтрак, свободное время для покупок сувениров и прогулок по городу.</p>День: завершение тура, отъезд.' }
+            ],
+            includes: [
+                'Проживание в отелях и гостевых домах',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: возможность организовать мастер-классы по приготовлению осетинских пирогов или традиционных ремесел'
+            ],
+            thumbnails: [
+                'Img/осетия 1.jpg',
+                'Img/осетия 2.jpg',
+                'Img/осетия 3.jpg'
+            ]
+        },
+        {
+            id: 7,
+            title: 'Приключения на Кавказе',
+            duration: '7 дней',
+            price: 55000,
+            region: 'kavkaz',
+            type: 'active',
+            image: 'Img/кавказ.webp',
+            description: 'Отправьтесь в захватывающее путешествие по одному из самых живописных регионов России! Кавказ – это величественные горы, бурные реки, древние традиции и гостеприимные люди. Тур сочетает активный отдых, культурное погружение и незабываемые впечатления.',
+            program: [
+                { day: 'День 1: Владикавказ', description: 'Утро: прибытие во Владикавказ, размещение в отеле.</p>День: обзорная экскурсия по городу (площадь Свободы, памятник "Скорбящая мать", Центральный рынок).</p>Вечер: ужин в ресторане с осетинской кухней.' },
+                { day: 'День 2: Скала "Девичьи слезы" и переезд в Кабардино-Балкарию', description: 'Утро: завтрак, выезд к скале "Девичьи слезы" (30 км).</p>День: пешая прогулка к скале, фотосессия.</p>После обеда: переезд в Кабардино-Балкарию (120 км), размещение в гостинице.</p>Вечер: ужин в ресторане.' },
+                { day: 'День 3: Гора Эльбрус', description: 'Утро: Завтрак, выезд к горе Эльбрус (40 км).</p>День: подъем на канатной дороге на высоту 3,800 м, возможность насладиться видами.</p>После обеда: прогулка по окрестностям, фото на фоне Эльбруса.</p>Вечер: возвращение в гостиницу, ужин.' },
+                { day: 'День 4: Кисловодск', description: 'Утро: завтрак, выезд в Кисловодск (70 км).</p>День: прогулка по Курортному парку, посещение Нарзанной галереи.</p> После обеда: экскурсия по историческим местам Кисловодска (Кисловодская крепость).</p>Вечер: ужин в кафе, свободное время.' },
+                { day: 'День 5: Приэльбрусье', description: 'Утро: Завтрак, выезд в Приэльбрусье.</p>День: пеший поход по живописным маршрутам, осмотр водопадов и альпийских лугов.</p>После обеда: возможность попробовать местную кухню в горном кафе.</p>Вечер: возвращение в гостиницу, ужин.' },
+                { day: 'День 6: Железноводск', description: 'Утро: завтрак, выезд в Железноводск (50 км). </p>День: посещение Железноводского курорта, прогулка по парку и подъем на гору Бештау.</p>После обеда: свободное время для отдыха и покупок.</p>Вечер: ужин в ресторане с местной кухней.' },
+                { day: 'День 7: Архыз и завершение тура', description: 'Утро: завтрак, выезд в Архыз (100 км).</p>День: прогулка по живописным местам Архыза, осмотр исторических памятников.</p>После обеда: возвращение во Владикавказ, свободное время для прощального шопинга.</p>Вечер: ужин и завершение тура.' }
+            ],
+            includes: [
+                'Проживание в отелях и гостевых домах',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: возможность организовать мастер-классы по приготовлению местных блюд или занятия по экотуризму.'
+            ],
+            thumbnails: [
+                'Img/кавказ 1.jpg',
+                'Img/кавказ 2.jpg',
+                'Img/кавказ 3.jpg'
+            ]
+        },
+        {
+            id: 8,
+            title: 'Озеро Байкал',
+            duration: '6 дней',
+            price: 48000,
+            region: 'siberia',
+            type: 'active',
+            image: 'Img/байкал.png',
+            description: '"Озеро Байкал" – это увлекательное путешествие по одному из самых красивых и загадочных мест России. Такой тур обычно включает посещение ключевых достопримечательностей озера Байкал, знакомство с местной природой, культурой и традициями.',
+            program: [
+                { day: 'День 1: Иркутск', description: 'Утро: прибытие в Иркутск, размещение в отеле.</p> День: обзорная экскурсия по Иркутску (Театр кукол, Костёл, памятник Александру III).</p> Вечер: ужин в ресторане с местной кухней.' },
+                { day: 'День 2: Переезд на Ольхон', description: 'Утро: завтрак, выезд на Ольхон (около 250 км).</p> День: паромная переправа на остров, размещение в гостевом доме.</p>После обеда: прогулка по бухте Песчаная, купание.</p> Вечер: ужин с местными блюдами.' },
+                { day: 'День 3: Мыс Хобой', description: 'Утро: завтрак, выезд к мысу Хобой (экскурсия на внедорожниках).</p> День: пеший поход к мысу, наслаждение видами Байкала, фотосессия.</p>После обеда: возвращение в поселок Хужир, свободное время.</p> Вечер: ужин в ресторане.' },
+                { day: 'День 4: Листвянка', description: 'Утро: завтрак, выезд из Ольхона в Листвянку (переезд около 200 км).</p> День: посещение Байкальского музея, прогулка по набережной.</p> После обеда: поездка на канатной дороге на гору Крестовая.</p> Вечер: ужин в кафе с видом на Байкал.' },
+                { day: 'День 5: Старая Листвянка и Кругобайкальская железная дорога', description: 'Утро: завтрак, экскурсия по Старой Листвянке (исторические здания, старинные церкви).</p> День: поездка по Кругобайкальской железной дороге с остановками для фотографий и прогулок.</p>После обеда: возвращение в Листвянку, свободное время для отдыха.</p> Вечер: ужин с традиционными байкальскими блюдами.' },
+                { day: 'День 6: Возвращение в Иркутск', description: 'Утро: завтрак, выезд в Иркутск.</p> День: свободное время для покупок сувениров и отдыха.</p> После обеда: трансфер в аэропорт, завершение тура.' }
+            ],
+            includes: [
+                'Проживание в отелях и гостевых домах',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус и внедорожники для экскурсийс',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: Возможность организовать мастер-классы по народным ремеслам или занятия по экотуризму'
+            ],
+            thumbnails: [
+                'Img/байкал 2.jpg',
+                'Img/байкал 3.jpg',
+                'https://s0.rbk.ru/v6_top_pics/media/img/1/68/347321134375681.webp'
+            ]
+        },
+        {
+            id: 9,
+            title: 'Сокровища Сахалина',
+            duration: '7 дней',
+            price: 55000,
+            region: 'far-east',
+            type: 'ski',
+            image: 'Img/dombay.jpg',
+            description: '"Сокровища Сахалина" – это увлекательное путешествие по одному из самых загадочных и живописных регионов России. Сахалин, крупнейший остров страны, славится уникальной природой, богатой историей и культурным наследием.',
+            program: [
+                { day: 'День 1: Южно-Сахалинск', description: 'Утро: прибытие в Южно-Сахалинск, размещение в отеле.</p> День: обзорная экскурсия по городу (площадь Победы, собор, памятник А.С. Пушкину).</p> Вечер: ужин в ресторане с местной кухней.' },
+                { day: 'День 2: Невельск и Тихая бухта', description: 'Утро: завтрак, выезд в Невельск (около 60 км).</p> День: прогулка по Невельску, посещение местных достопримечательностей.</p>После обеда: поездка на Тихую бухту, отдых на пляже.</p> Вечер: ужин на берегу моря.' },
+                { day: 'День 3: Мыс Кекур', description: 'Утро: завтрак, выезд к мысу Кекур (экскурсия на внедорожниках).</p> День: пеший поход к мысу, наслаждение видами и фотографирование.</p>После обеда: возвращение в Южно-Сахалинск, свободное время.</p> Вечер: ужин в кафе.' },
+                { day: 'День 4: Заповедник "Курильский"', description: 'Утро: завтрак,  выезд в заповедник "Курильский".</p> День: экскурсия по заповеднику, наблюдение за дикой природой и уникальной флорой и фауной.</p>После обеда: пикник на свежем воздухе.</p> Вечер: возвращение в Южно-Сахалинск, ужин.' },
+                { day: 'День 5: Курилы (остров Итуруп)', description: 'Утро: завтрак, выезд на пароме на остров Итуруп.</p> День: обзорная экскурсия по острову (посещение горячих источников, водопадов).</p>После обеда: прогулка по живописным местам острова.</p> Вечер: ужин с морепродуктами.' },
+                { day: 'День 6: Исследование Итурупа', description: 'Утро: завтрак, свободное время для самостоятельного изучения острова (возможность рыбной ловли или дайвинга).</p> День: посещение местных культурных достопримечательностей.</p>После обеда: возвращение на пароме в Южно-Сахалинск.</p> Вечер: прощальный ужин.' },
+                { day: 'День 7: Возвращение', description: 'Утро: завтрак, свободное время для покупок сувениров.</p> День: трансфер в аэропорт, завершение тура.' }
+            ],
+            includes: [
+                'Проживание в отелях и гостевых домах',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус и внедорожники для экскурсий',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: возможность организовать мастер-классы по местным ремеслам или занятия по экотуризму'
+            ],
+            thumbnails: [
+                'Img/сахалин 1.webp',
+                'Img/сахалин 2.jpeg',
+                'Img/сахалин 3.jpg'
+            ]
+        },
+        {
+            id: 10,
+            title: 'Ингушетия',
+            duration: '5 дней',
+            price: 45000,
+            region: 'kavkaz',
+            type: 'ski',
+            image: 'Img/ingushetia.webp',
+            description: 'Тур по Ингушетии – это уникальное путешествие в один из самых живописных и загадочных регионов Северного Кавказа. Ингушетия славится древними башенными комплексами, величественными горами, богатой культурой и гостеприимством местных жителей.',
+            program: [
+                { day: 'День 1: Прибытие в Магас', description: 'Утро: прибытие в Магас, размещение в отеле.</p>День: обзорная экскурсия по столице Ингушетии (площадь, памятник "Солдату-освободителю").</p>Вечер: ужин в ресторане с традиционной ингушской кухней.' },
+                { day: 'День 2: Ведучи и Техи', description: 'Утро: завтрак, выезд в село Ведучи.</p> День: посещение старинных ингушских башен, прогулка по живописным местам.</p> После обеда: переезд в село Техи, экскурсия по историческим памятникам.</p>Вечер: возвращение в Магас, свободное время.' },
+                { day: 'День 3: Ингушские башни (п. Эрзи)', description: 'Утро: завтрак, выезд в п. Эрзи.</p> День: исследование ингушских башен, включая башню "Старая Крепость" и "Башню Согласия".</p>После обеда: пеший поход к природным достопримечательностям.</p>Вечер: ужин в местном кафе' },
+                { day: 'День 4: Провал (п. Джейрах)', description: 'Утро: завтрак, выезд в п. Джейрах.</p> День: посещение Провала — природного чуда Ингушетии, экскурсия по окрестностям.</p> После обеда: прогулка по ущелью и фотографирование.</p> Вечер: возвращение в Магас, прощальный ужин.' },
+                { day: 'День 5: Музей ингушского народа и возвращение', description: 'Утро: завтрак, посещение музея ингушского народа.</p> День: экскурсия по музею, изучение культуры и истории ингушского народа.</p> После обеда: свободное время для покупок сувениров.</p> Вечер: трансфер в аэропорт или на вокзал, завершение тура.' }
+            ],
+            includes: [
+                'Проживание в гостиницах и гостевых домах',
+                'Питание: завтраки и ужины',
+                'Транспорт: комфортабельный автобус для экскурсий',
+                'Экскурсии с профессиональными гидами',
+                'Дополнительно: возможность организовать мастер-классы по традиционным ингушским ремеслам или занятия по экотуризму'
+            ],
+            thumbnails: [
+                'Img/ингушетия 1.jpg',
+                'Img/ингушетия 2.jpg',
+                'Img/ингушетия 3.webp'
+            ]
+        },
+        {
+            id: 11,
+            title: 'Ивановские озера Хакасии',
+            duration: '4 дней',
+            price: 38000,
+            region: 'siberia',
+            type: 'ski',
+            image: 'https://avatars.mds.yandex.net/i?id=1d6829510122e0ee0b177c2c0afa8ecb_l-10842658-images-thumbs&n=13',
+            description: 'Тур по Ингушетии – это уникальное путешествие в один из самых живописных и загадочных регионов Северного Кавказа. Ингушетия славится древними башенными комплексами, величественными горами, богатой культурой и гостеприимством местных жителей.',
+            program: [
+                { day: 'День 1: Прибытие в Абакан', description: 'Утро: прибытие в Абакан, встреча с гидом.</p>День: трансфер в Ивановские озера, размещение в гостевом доме.</p>После обеда: обзорная экскурсия по окрестностям озер, знакомство с природой.</p>Вечер: ужин с традиционными блюдами хакасской кухни, вечер у костра.' },
+                { day: 'День 2: Исследование Ивановских озер', description: 'Утро: завтрак, утренняя прогулка вдоль берегов озер.</p>День: экскурсия на катере по озерам, возможность купания и рыбалки.</p>После обеда: пеший поход к водопадам и живописным местам вокруг озер.</p> Вечер: ужин, свободное время для отдыха или вечерних прогулок.' },
+                { day: 'День 3: Национальный парк "Хакассия" и гора Таганай', description: 'Утро: завтрак, выезд в Национальный парк "Хакассия".</p>День: экскурсия по парку, наблюдение за редкими видами флоры и фауны.</p>После обеда: подъем на гору Таганай, наслаждение панорамными видами.</p>Вечер: возвращение в гостевой дом, ужин и обсуждение впечатлений.' },
+                { day: 'День 4: Каменные бабки и возвращение', description: 'Утро: завтрак, выезд к петроглифам (каменным бабкам).</p>День: экскурсия по историческим местам, изучение древних рисунков и их значения.</p>После обеда: переезд в село Шира, свободное время для осмотра местных достопримечательностей.</p>Вечер: трансфер обратно в Абакан, завершение тура.' }
+            ],
+            includes: [
+                'Проживание в уютных и гостевых домах',
+                'Питание: завтраки, обеды и ужины',
+                'Транспорт: комфортабельный автобус для экскурсий',
+                'Экскурсии с опытными гидами',
+                'Дополнительно: возможность организовать мастер-классы по традиционным хакасским ремеслам или занятия по экотуризму.'
+            ],
+            thumbnails: [
+                'Img/хакасия 1.jpg',
+                'Img/хакасия 2.jpg',
+                'Img/хакасия 3.webp'
+            ]
+        },
+        {
+            id: 12,
+            title: 'Южно-Чуйское кольцо',
+            duration: '7 дней',
+            price: 55000,
+            region: 'siberia',
+            type: 'hourse',
+            image: 'https://avatars.dzeninfra.ru/get-zen_doc/18497/pub_62eaadc32d7a345deb659949_62eb372478a3d45467405844/scale_1200',
+            description: 'Конный тур "Южно-Чуйское кольцо" – это увлекательное путешествие по одному из самых живописных районов Горного Алтая, который славится своими высокогорными ландшафтами, чистыми реками и богатой культурой местных народов.',
+            program: [
+                { day: 'День 1: Прибытие в Горно-Алтайск', description: 'Утро: прибытие в Горно-Алтайск, встреча с гидом..</p>День: трансфер на Чуйский тракт, знакомство с лошадьми.</p> После обеда: обзорная экскурсия по окрестностям, подготовка к конному маршруту..</p> Вечер: ужин и обсуждение предстоящего тура.' },
+                { day: 'День 2: Гора Белуха', description: 'Утро: завтрак, выезд к горе Белуха.</p>День: конная прогулка к подножию горы, фотографирование живописных пейзажей.</p>После обеда: пикник на природе, свободное время для отдыха..</p> Вечер: возвращение в лагерь, ужин у костра.' },
+                { day: 'День 3: Озеро Аккем', description: 'Утро: завтрак, выезд к озеру Аккем.</p>День: конный поход вдоль живописных берегов озера, возможность купания.</p>После обеда: экскурсия по окрестностям, исследование флоры и фауны..</p>Вечер: ужин и вечерняя прогулка.' },
+                { day: 'День 4: Курган "Скрижаль"', description: 'Утро: завтрак, выезд к кургану "Скрижаль".</p>День: посещение исторического памятника, изучение его значимости.</p>После обеда: конная прогулка по окрестным горам..</p>Вечер: возвращение в лагерь, ужин и обсуждение впечатлений.' },
+                { day: 'День 5: Село Уймон', description: 'Утро: завтрак, выезд в село Уймон.</p>День: знакомство с местной культурой и традициями, мастер-классы по народным ремеслам.</p>После обеда: прогулка по селу, общение с местными жителями.</p>Вечер: ужин с традиционными блюдами алтайской кухни.' },
+                { day: 'День 6: Долина реки Чуя', description: 'Утро: завтрак, выезд в долину реки Чуя.</p>День: конная прогулка вдоль реки, наслаждение живописными видами.</p>После обеда: пикник на берегу реки, свободное время для рыбалки или купания..</p>Вечер: возвращение в лагерь, ужин и вечерние развлечения.' },
+                { day: 'День 7: Памятник "Золотой человек" и возвращение', description: 'Утро: завтрак, выезд к памятнику "Золотой человек".</p>День: экскурсия по историческим местам, изучение древней культуры.</p>После обеда: трансфер обратно в Горно-Алтайск.</p> Вечер: завершение тура, прощальный ужин.' }
+            ],
+            includes: [
+                'Проживание в палатках или гостевых домах (в зависимости от маршрута)',
+                'Питание: завтраки, обеды и ужины',
+                'Транспорт: комфортабельный автобус для трансферов',
+                'Конные экскурсии с опытными инструкторами',
+                'Дополнительно: возможность организовать мастер-классы по верховой езде и альпинизму'
+            ],
+            thumbnails: [
+                'Img/чуйское кольцо 1.jpg',
+                'Img/чуйское кольцо 2.jpg',
+                'Img/чуйское кольцо 3.jpg'
+            ]
+        },
+        {
+            id: 13,
+            title: 'Приключения на Камчатке',
+            duration: '6 дней',
+            price: 70000,
+            region: 'far-east',
+            type: 'active',
+            image: 'Img/камчатка.webp',
+            description: 'Камчатка — один из самых загадочных и впечатляющих регионов России. Этот полуостров на Дальнем Востоке славится своей первозданной природой: действующими вулканами, термальными источниками, гейзерами и богатым животным миром. Здесь нет больших городов, зато есть бескрайние просторы, где человек чувствует себя настоящим первооткрывателем.',
+            program: [
+                { day: 'День 1: Прибытие в Петропавловск-Камчатский', description: 'Утро: прибытие в Петропавловск-Камчатский, встреча с гидом.</p>День: обзорная экскурсия по городу, посещение музея камчатской природы.</p> После обеда: знакомство с местной кухней в ресторане.</p> Вечер: ужин и обсуждение предстоящего маршрута.' },
+                { day: 'День 2: Вулкан Ключевская сопка', description: 'Утро: завтрак, выезд к вулкану Ключевская сопка.</p>День: пешеходный маршрут к подножию вулкана, возможность увидеть активные извержения (при наличии).</p> После обеда: пикник на природе, свободное время для фотографирования.</p> Вечер: возвращение в лагерь, ужин и вечерние развлечения.' },
+                { day: 'День 3: Долина гейзеров', description: 'Утро: завтрак, выезд в Долину гейзеров.</p>День: экскурсия по долине, наблюдение за гейзерами и горячими источниками.</p>После обеда: обед на природе, возможность искупаться в термальных источниках.</p>Вечер: возвращение в лагерь, ужин.' },
+                { day: 'День 4: Кратер вулкана Мутновский', description: 'Утро: завтрак, выезд к кратеру вулкана Мутновский.</p>День: пешеходная экскурсия к кратеру, изучение активной вулканической деятельности.</p>После обеда: пикник с видом на кратер, свободное время для фотографий.</p>Вечер: возвращение в лагерь, ужин и обсуждение впечатлений.' },
+                { day: 'День 5: Озеро Курильское', description: 'Утро: завтрак, выезд к озеру Курильское.</p>День: прогулка по берегу озера, наблюдение за дикой природой (медведи, птицы).</p>После обеда: рыбалка или катание на лодках (в зависимости от сезона).</p>Вечер: возвращение в лагерь, ужин и вечерние развлечения.' },
+                { day: 'День 6: Национальный парк "Кроноцкий" и возвращение', description: 'Утро: завтрак, выезд в Национальный парк "Кроноцкий".</p>День: экскурсия по парку, посещение смотровых площадок и водопадов.</p>После обеда: трансфер обратно в Петропавловск-Камчатский.</p>Вечер: завершение тура, прощальный ужин.' }
+            ],
+            includes: [
+                'Проживание в гостиницах или домах отдыха',
+                'Питание: завтраки, обеды и ужины',
+                'Транспорт: комфортабельный автобус для трансферов',
+                'Экскурсии с опытными гидами',
+                'Дополнительно: возможность организовать рыбалку и фотосессии с дикой природой'
+            ],
+            thumbnails: [
+                'Img/камчатка 1.jpg',
+                'Img/камчатка 2.jpg',
+                'Img/камчатка  3.jpg'
+            ]
+        },
+        {
+            id: 14,
+            title: 'Загадки Кольского полуострова',
+            duration: '5 дней',
+            price: 55000,
+            region: 'south',
+            type: 'beach',
+            image: 'https://avatars.mds.yandex.net/i?id=3e6fc06cf2397a35e602d39e123b3fb2_l-4782559-images-thumbs&n=13',
+            description: 'Кольский полуостров — загадочный и суровый край, полный тайн, мифов и легенд.',
+            program: [
+                { day: 'День 1: Прибытие в Мурманск', description: 'Утро: прибытие в Мурманск, встреча с гидом.</p>День: обзорная экскурсия по городу: памятник Алеше, Мурманский морской порт.</p> После обеда: посещение Мурманского океанариума.</p> Вечер: ужин в местном ресторане с северной кухней.' },
+                { day: 'День 2: Кировск и горнолыжный курорт', description: 'Утро: завтрак, выезд в Кировск (около 2 часов).</p> День: экскурсия по городу, подъем на гору Айкуайвенчорр. Возможность покататься на лыжах или сноуборде.</p> После обеда: пикник на свежем воздухе с видом на горы.</p> Вечер: возвращение в Мурманск, ужин.' },
+                { day: 'День 3: Лапландский заповедник', description: 'Утро: завтрак, выезд в Лапландский заповедник.</p> День: прогулка по заповеднику, наблюдение за дикой природой, посещение оленеводческой фермы.</p> После обеда: обед в заповеднике, возможность покормить оленей.</p> Вечер: возвращение в Мурманск, ужин и подготовка к наблюдению северного сияния (если сезон).' },
+                { day: 'День 4: Кола и древние петроглифы', description: 'Утро: завтрак, выезд к Коле.</p>День: экскурсия к древним петроглифам на скалах. Обзорная экскурсия по историческим местам.</p>После обеда: обед в местном кафе с традиционной кухней.</p>Вечер: возвращение в Мурманск, свободное время для прогулок по городу.' },
+                { day: 'День 5: Сосновый бор и озеро Имандра', description: 'Утро: завтрак, выезд к озеру Имандра.</p> День: прогулка по сосновому бору, купание (в зависимости от погоды), рыбалка или пикник на берегу озера.</p> После обеда: свободное время для отдыха и фотографий.</p> Вечер: возвращение в Мурманск, прощальный ужин.' }
+            ],
+            includes: [
+                'Проживание в гостиницах или домах отдыха',
+                'Питание: завтраки, обеды и ужины',
+                'Транспорт: комфортабельный автобус для трансферов',
+                'Экскурсии с опытными гидами',
+                'Дополнительно: возможность организовать вечерние экскурсии для наблюдения северного сияния (в зависимости от сезона)'
+            ],
+            thumbnails: [
+                'Img/кольсикй п-ов 1.png',
+                'Img/кольский п-ов 2.jpg',
+                'Img/кольский п-ов 3.jpg'
+            ]
+        },
+        {
+            id: 15,
+            title: 'Солнечный Крым',
+            duration: '7 дней',
+            price: 45000,
+            region: 'south',
+            type: 'beach',
+            image: 'https://avatars.mds.yandex.net/i?id=502e503836ab33bc26081c64c19c6152_l-5355267-images-thumbs&n=13',
+            description: 'Тур "Солнечный Крым" – это отличный вариант для отдыха на полуострове, где вас ждут живописные пейзажи, тёплое море, богатая история и разнообразные развлечения.',
+            program: [
+                { day: 'День 1: Прибытие в Симферополь', description: 'Утро: прибытие в Симферополь, встреча с гидом.</p> День: обзорная экскурсия по Симферополю: посещение Центрального рынка, парка им. Гагарина.</p> После обеда: трансфер в Ялту (около 1,5 часов).</p> Вечер: ужин в ресторане с видом на море' },
+                { day: 'День 2: Ялта и Ливадийский дворец', description: 'Утро: завтрак, экскурсия по Ялте: Приморский парк, Набережная.</p>  День: посещение Ливадийского дворца и его садов.</p>  После обеда: свободное время для прогулок по Ялте.</p> Вечер: ужин в местном кафе.' },
+                { day: 'День 3: Севастополь', description: 'Утро: завтрак, выезд в Севастополь (около 1,5 часов).</p> День: обзорная экскурсия по Севастополю: Панорама обороны Севастополя, Сапун-гора.</p> После обеда: посещение музея Черноморского флота..</p> Вечер: ужин в ресторане на набережной.' },
+                { day: 'День 4: Балаклава и Гора Ай-Петри', description: 'Утро: завтрак, выезд в Балаклаву (около 30 минут).</p>  День: экскурсия по Балаклаве, посещение подводной лодки и крепости.</p> После обеда: подъем на гору Ай-Петри на канатной дороге. Пешеходная прогулка по вершине.</p>  Вечер: возвращение в Ялту, ужин.' },
+                { day: 'День 5: Коктебель', description: 'Утро: завтрак, выезд в Коктебель (около 1,5 часов).</p> День: прогулка по пляжу, возможность заняться водными видами спорта.</p>После обеда: посещение музея Михаила Волошина.</p>  Вечер: ужин в кафе с крымской кухней.' },
+                { day: 'День 6: Феодосия', description: 'Утро: завтрак, выезд в Феодосию (около 30 минут).</p>  День: экскурсия по Феодосии: посещение картинной галереи Айвазовского, древнего храма Святой Екатерины.</p>  После обеда: свободное время для отдыха на пляже.</p>  Вечер: возвращение в Ялту, прощальный ужин.' },
+                { day: 'День 7: Возвращение в Симферополь', description: 'Утро: завтрак, свободное время для последних покупок и прогулок.</p>  День: трансфер в Симферополь (около 1,5 часов).</p> После обеда: прощание и выезд' }
+            ],
+            includes: [
+                'Проживание в гостиницах или пансионатах',
+                'Питание: завтраки, обеды и ужины',
+                'Транспорт: комфортабельный автобус для трансферов',
+                'Экскурсии с опытными гидами'
+            ],
+            thumbnails: [
+                'Img/крым 1.jpg',
+                'Img/крым 2.jpg',
+                'Img/крым 3.jpg'
+            ]
+        }
+    ];
+        // Helper functions
+        function getRegionName(region) {
+            const regions = {
+                'central': 'Центральная Россия',
+                'northwest': 'Северо-Запад',
+                'south': 'Юг России',
+                'kavkaz': 'Северный Кавказ',
+                'siberia': 'Сибирь',
+                'far-east': 'Дальний Восток'
+            };
+            return regions[region] || region;
+        }
+
+        function getTypeName(type) {
+            const types = {
+                'excursion': 'Экскурсионный',
+                'active': 'Активный',
+                'beach': 'Пляжный',
+                'ski': 'Горнолыжный',
+                'hourse': 'Конный'
+            };
+            return types[type] || type;
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.nav');
+        
+        menuToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            menuToggle.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Load tour data from URL parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tourId = urlParams.get('id') ? parseInt(urlParams.get('id')) : 1;
+            
+            loadTourData(tourId);
+        });
+
+        // Function to load tour data
+        function loadTourData(tourId) {
+            const tour = mockTours.find(t => t.id === tourId);
+            
+            if (!tour) {
+                console.error('Тур не найден');
+                return;
+            }
+    
+        // 1. Заполняем основную информацию
+        document.getElementById('tour-title').textContent = tour.title;
+        document.getElementById('tour-short-description').textContent = tour.description.substring(0, 100) + '...';
+        
+        // Исправляем заполнение мета-данных (убираем +=)
+        document.getElementById('tour-duration').innerHTML = `<i class="fas fa-calendar-alt"></i> Длительность: ${tour.duration}`;
+        document.getElementById('tour-region').innerHTML = `<i class="fas fa-map-marker-alt"></i> Регион: ${getRegionName(tour.region)}`;
+        document.getElementById('tour-type').innerHTML = `<i class="fas fa-tag"></i> Тип: ${getTypeName(tour.type)}`;
+        document.getElementById('tour-price').innerHTML = `<i class="fas fa-ruble-sign"></i> Цена: ${tour.price.toLocaleString('ru-RU')} руб.`;
+        
+        
+        // 2. Заполняем описание тура
+        document.getElementById('tour-description').textContent = tour.description;
+        
+        // 3. Заполняем программу тура
+        const programContainer = document.getElementById('tour-program');
+        programContainer.innerHTML = ''; // Очищаем контейнер
+
+        tour.program.forEach(item => {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'program-day';
+            
+            // Заменяем </p> на переносы строк и разбиваем на части
+            const descriptionParts = item.description.replace(/<\/p>/g, '\n').split('\n').filter(part => part.trim() !== '');
+            
+            dayElement.innerHTML = `
+                <h3>${item.day}</h3>
+                ${descriptionParts.map(part => `<p>${part.trim()}</p>`).join('')}
+            `;
+            
+            programContainer.appendChild(dayElement);
+        });
+    
+        // 4. Заполняем включенные услуги
+        const includesContainer = document.getElementById('tour-includes');
+        includesContainer.innerHTML = ''; // Очищаем контейнер
+        
+        tour.includes.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            includesContainer.appendChild(li);
+        });
+        
+        // 5. Заполняем галерею изображений
+        const mainImage = document.getElementById('main-image');
+        mainImage.src = tour.image;
+        mainImage.alt = tour.title;
+        
+        const thumbnailsContainer = document.getElementById('thumbnails-container');
+        thumbnailsContainer.innerHTML = '';
+        
+        tour.thumbnails.forEach((thumb, index) => {
+            const img = document.createElement('img');
+            img.src = thumb;
+            img.alt = `${tour.title} ${index + 1}`;
+            if (index === 0) img.classList.add('active');
+            
+            img.addEventListener('click', function() {
+                // Обновляем главное изображение при клике на миниатюру
+                mainImage.src = this.src;
+            });
+            
+            thumbnailsContainer.appendChild(img);
+        });
+        const reviewsBtn = document.querySelector('.tour-actions a');
+        if (reviewsBtn) {
+            reviewsBtn.href = `reviews.html?tour=${tour.id}`;
+        }
+}
+        
+    </script>
+</body>
+</html>

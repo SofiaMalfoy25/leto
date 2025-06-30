@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Туры по России | Туризм России</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2a5f8a;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --text: #333;
+            --text-light: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            padding: 10px 0;
+            background: rgba(42,95,138,0.98);
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav li {
+            margin-left: 30px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+        }
+        
+        .nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav a:hover:after, .nav a.active:after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            height: 50vh;
+            min-height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            margin-top: 70px;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .page-header p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        /* Tours Filters */
+        .tours-filters {
+            padding: 20px 0;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 70px;
+            z-index: 900;
+            transition: all 0.3s ease;
+        }
+        
+        .tours-filters.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            margin-bottom: 0;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .filter-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42,95,138,0.2);
+        }
+        
+        /* Tours List */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 60px;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .tours-list {
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        }
+        
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .tour-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Фиксированная высота карточки */
+        }
+        
+        .tour-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tour-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .tour-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .tour-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .tour-card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Растягиваем контент на всю доступную высоту */
+        }
+        
+        .tour-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            min-height: 60px; /* Фиксированная высота заголовка */
+            display: flex;
+            align-items: center;
+        }
+        
+        .tour-card .meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .tour-card .type {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: var(--light);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .tour-card .description {
+            margin-bottom: 20px;
+            color: var(--text-light);
+            flex-grow: 1; /* Растягиваем описание на доступное пространство */
+            min-height: 80px; /* Минимальная высота описания */
+        }
+        
+        .tour-card .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .tour-card .btn {
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: auto; /* Прижимаем кнопку к низу карточки */
+        }
+        
+        /* No results message */
+        .no-results-message {
+            text-align: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 30px;
+        }
+        
+        .no-results-message p {
+            font-size: 18px;
+            color: var(--text-light);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .tours-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 42px;
+            }
+            
+            .page-header p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background-color: rgba(42,95,138,0.98);
+                transition: all 0.5s ease;
+                padding: 20px 0;
+            }
+            
+            .nav.active {
+                left: 0;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav li {
+                margin: 15px 0;
+            }
+            
+            .page-header {
+                min-height: 350px;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .filters {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                min-height: 300px;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .tours-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">Туризм <span>России</span></div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="{{ url_for('main') }}">Главная</a></li>
+                    <li><a href="{{ url_for('blog') }}">Регионы</a></li>
+                    <li><a href="{{ url_for('tours') }}" class="active">Туры</a></li>
+                    <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
+                    <li><a href="{{ url_for('trends') }}">Тренды</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Туры по России</h1>
+            <p>Найдите идеальное путешествие по нашей необъятной стране</p>
+        </div>
+    </section>
+
+    <section class="tours-filters">
+        <div class="container">
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="region">Регион:</label>
+                    <select id="region">
+                        <option value="all">Все регионы</option>
+                        <option value="central">Центральная Россия</option>
+                        <option value="northwest">Северо-Запад</option>
+                        <option value="south">Юг России</option>
+                        <option value="kavkaz">Северный Кавказ</option>
+                        <option value="siberia">Сибирь</option>
+                        <option value="far-east">Дальний Восток</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="type">Вид тура:</label>
+                    <select id="type">
+                        <option value="all">Все виды</option>
+                        <option value="excursion">Экскурсионный</option>
+                        <option value="active">Активный</option>
+                        <option value="beach">Пляжный</option>
+                        <option value="ski">Горнолыжный</option>
+                        <option value="hourse">Конный</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="price">Цена:</label>
+                    <select id="price">
+                        <option value="all">Любая</option>
+                        <option value="0-40000">До 40 000 руб.</option>
+                        <option value="40000-50000">40 000 - 50 000 руб.</option>
+                        <option value="50000-70000">50 000 - 70 000 руб.</option>
+                        <option value="70000+">От 70 000 руб.</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section tours-list">
+        <div class="container">
+            <h2 class="section-title">Наши туры</h2>
+            <div class="tours-grid">
+                <!-- Туры будут загружаться через JavaScript -->
+            </div>
+            <div id="no-results" class="no-results-message" style="display: none;">
+                <p>По вашему запросу ничего не найдено. Попробуйте изменить параметры фильтрации.</p>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-vk"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>© 2025 Туризм России. Все права защищены.</p>
+            <p>Путешествуйте с удовольствием!</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Header scroll effect
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+// Mobile menu toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const nav = document.querySelector('.nav');
+
+menuToggle.addEventListener('click', function() {
+    nav.classList.toggle('active');
+    menuToggle.innerHTML = nav.classList.contains('active') ? 
+        '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+});
+
+// Close menu when clicking on a link
+document.querySelectorAll('.nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    });
+});
+
+// Hide filters on scroll down, show on scroll up
+let lastScroll = 0;
+const filters = document.querySelector('.tours-filters');
+const filtersHeight = filters.offsetHeight;
+const headerHeight = document.querySelector('.header').offsetHeight;
+const scrollOffset = headerHeight + filtersHeight;
+
+window.addEventListener('scroll', function() {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll <= scrollOffset) {
+        filters.classList.remove('hidden');
+        return;
+    }
+    
+    if (currentScroll > lastScroll && !filters.classList.contains('hidden')) {
+        // Scroll down
+        filters.classList.add('hidden');
+    } else if (currentScroll < lastScroll && filters.classList.contains('hidden')) {
+        // Scroll up
+        filters.classList.remove('hidden');
+    }
+    
+    lastScroll = currentScroll;
+});
+
+// Main tours filtering function
+function filterTours() {
+    const tours = document.querySelectorAll('.tour-card');
+    const noResultsMessage = document.getElementById('no-results');
+    
+    // If no tour cards exist at all, hide the message and return
+    if (tours.length === 0) {
+        noResultsMessage.style.display = 'none';
+        return;
+    }
+    
+    const region = document.getElementById('region').value;
+    const type = document.getElementById('type').value;
+    const priceRange = document.getElementById('price').value;
+    
+    let visibleCount = 0;
+    
+    tours.forEach(tour => {
+        const tourRegion = tour.getAttribute('data-region');
+        const tourType = tour.getAttribute('data-type');
+        const tourPrice = parseInt(tour.getAttribute('data-price'));
+        
+        const regionMatch = region === 'all' || tourRegion === region;
+        const typeMatch = type === 'all' || tourType === type;
+        
+        let priceMatch = false;
+        if (priceRange === 'all') {
+            priceMatch = true;
+        } else if (priceRange === '0-40000') {
+            priceMatch = tourPrice <= 40000;
+        } else if (priceRange === '40000-50000') {
+            priceMatch = tourPrice > 40000 && tourPrice <= 50000;
+        } else if (priceRange === '50000-70000') {
+            priceMatch = tourPrice > 50000 && tourPrice <= 70000;
+        } else if (priceRange === '70000+') {
+            priceMatch = tourPrice > 70000;
+        }
+        
+        if (regionMatch && typeMatch && priceMatch) {
+            tour.style.display = 'block';
+            visibleCount++;
+        } else {
+            tour.style.display = 'none';
+        }
+    });
+    
+    // Show message only if there are cards but none matched filters
+    noResultsMessage.style.display = (visibleCount === 0 && tours.length > 0) ? 'block' : 'none';
+}
+
+// Animation on scroll for tour cards
+function animateCards() {
+    const cards = document.querySelectorAll('.tour-card');
+    const windowHeight = window.innerHeight;
+    
+    cards.forEach((card, index) => {
+        const cardPosition = card.getBoundingClientRect().top;
+        const animationDelay = index * 0.1;
+        
+        if (cardPosition < windowHeight - 100 && card.style.display !== 'none') {
+            card.classList.add('animated');
+            card.style.transitionDelay = `${animationDelay}s`;
+        }
+    });
+}
+
+// Initialize filters and animations
+function initTours() {
+    // Set up event listeners for filters
+    document.getElementById('region').addEventListener('change', filterTours);
+    document.getElementById('type').addEventListener('change', filterTours);
+    document.getElementById('price').addEventListener('change', filterTours);
+    
+    // Initial filter run
+    filterTours();
+    
+    // Initialize animations
+    animateCards();
+    window.addEventListener('scroll', animateCards);
+}
+
+// Smooth scrolling for all links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Start everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', initTours);
+    </script>
+    
+    <style>
+        /* Добавим стили для сообщения о пустом результате */
+        .no-results-message {
+            text-align: center;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .no-results-message p {
+            margin: 0;
+        }
+    </style>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы о турах по России | Туризм России</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2a5f8a;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --text: #333;
+            --text-light: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            padding: 10px 0;
+            background: rgba(42,95,138,0.98);
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav li {
+            margin-left: 30px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+        }
+        
+        .nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav a:hover:after, .nav a.active:after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            height: 60vh;
+            min-height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            margin-top: 70px;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            animation: slideDown 1s ease-out;
+        }
+        
+        .page-header p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            animation: slideUp 1s ease-out;
+        }
+        
+        /* Reviews Section */
+        .reviews {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 50px;
+            font-size: 36px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        
+        .reviews-filter {
+            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-group label {
+            margin-right: 15px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .filter-group select {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            min-width: 250px;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+        
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42,95,138,0.2);
+        }
+        
+        .filter-group select.active-filter {
+            border-color: var(--accent);
+            background-color: rgba(243, 156, 18, 0.1);
+        }
+        
+        .reviews-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .review-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .review-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .review-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .review-card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #3a7bb4 100%);
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .review-card-header:after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 20px 20px 0 0;
+            border-color: var(--primary) transparent transparent transparent;
+        }
+        
+        .review-author {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .review-author:before {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 10px;
+        }
+        
+        .review-rating {
+            color: var(--accent);
+            font-size: 18px;
+            margin: 5px 0;
+        }
+        
+        .review-date {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .review-card-body {
+            padding: 25px;
+            position: relative;
+        }
+        
+        .review-tour {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .review-tour:before {
+            content: '\f3c5';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .review-text {
+            line-height: 1.7;
+            color: var(--text);
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .review-text:before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: rgba(243, 156, 18, 0.2);
+            font-size: 24px;
+        }
+        
+        .review-card-footer {
+            padding: 0 25px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .review-likes {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .review-likes:hover {
+            color: var(--secondary);
+        }
+        
+        .review-likes i {
+            margin-right: 5px;
+        }
+        
+        .review-share {
+            color: var(--text-light);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .review-share:hover {
+            color: var(--primary);
+        }
+        
+        .no-reviews {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: var(--text-light);
+            background-color: var(--light);
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            grid-column: 1 / -1;
+        }
+        
+        .no-reviews i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        /* Add Review Form */
+        .add-review-section {
+            background: linear-gradient(135deg, rgba(42,95,138,0.05) 0%, rgba(58,123,180,0.05) 100%);
+            padding: 60px 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .add-review {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .add-review h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .add-review h2:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42,95,138,0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .rating-select {
+            display: flex;
+            align-items: center;
+        }
+        
+        .rating-select select {
+            flex: 1;
+            margin-right: 15px;
+        }
+        
+        .rating-preview {
+            font-size: 24px;
+            color: var(--accent);
+        }
+        
+        /* Stars Rating */
+        .stars-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        
+        .stars-rating input {
+            display: none;
+        }
+        
+        .stars-rating label {
+            color: #ddd;
+            font-size: 28px;
+            padding: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .stars-rating input:checked ~ label,
+        .stars-rating input:hover ~ label,
+        .stars-rating label:hover,
+        .stars-rating label:hover ~ label {
+            color: var(--accent);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* Testimonials Carousel */
+        .testimonials-carousel {
+            margin: 50px 0;
+            position: relative;
+        }
+        
+        .testimonials-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            gap: 30px;
+            padding: 20px 0;
+            margin: 0 -20px;
+        }
+        
+        .testimonial-slide {
+            scroll-snap-align: start;
+            flex: 0 0 80%;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-slide:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 3px solid var(--accent);
+        }
+        
+        .testimonial-info h4 {
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .testimonial-info p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .testimonial-rating {
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .testimonial-text:before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: rgba(243, 156, 18, 0.2);
+            font-size: 24px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        /* Animations */
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .reviews-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 42px;
+            }
+            
+            .page-header p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .testimonial-slide {
+                flex: 0 0 85%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background-color: rgba(42,95,138,0.98);
+                transition: all 0.5s ease;
+                padding: 20px 0;
+            }
+            
+            .nav.active {
+                left: 0;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav li {
+                margin: 15px 0;
+            }
+            
+            .page-header {
+                min-height: 400px;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .reviews-filter {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group label {
+                margin-bottom: 8px;
+                margin-right: 0;
+            }
+            
+            .add-review {
+                padding: 30px;
+            }
+            
+            .testimonial-slide {
+                flex: 0 0 90%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                min-height: 350px;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .reviews-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .add-review {
+                padding: 25px 20px;
+            }
+            
+            .testimonial-slide {
+                flex: 0 0 95%;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">Туризм <span>России</span></div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="{{ url_for('main') }}">Главная</a></li>
+                    <li><a href="{{ url_for('blog') }}">Регионы</a></li>
+                    <li><a href="{{ url_for('tours') }}">Туры</a></li>
+                    <li><a href="{{ url_for('reviews') }}" class="active">Отзывы</a></li>
+                    <li><a href="{{ url_for('trends') }}">Тренды</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Отзывы туристов</h1>
+            <p>Реальные впечатления от путешествий по нашей стране</p>
+        </div>
+    </section>
+
+    <section class="reviews">
+        <div class="container">
+            <h2 class="section-title">Что говорят наши туристы</h2>
+            
+            <div class="reviews-filter">
+                <div class="filter-group">
+                    <label for="tour-select">Выберите тур:</label>
+                    <select id="tour-select">
+                        <option value="all">Все туры</option>
+                        <option value="1">Золотое кольцо</option>
+                        <option value="2">Путешествие по Карелии</option>
+                        <option value="3">Сибирское путешествие</option>
+                        <option value="4">Сказочный Алтай</option>
+                        <option value="5">Дагестан</option>
+                        <option value="6">Северная Осетия</option>
+                        <option value="7">Приключения на Кавказе</option>
+                        <option value="8">Озеро Байкал</option>
+                        <option value="9">Сокровища Сахалина</option>
+                        <option value="10">Ингушетия</option>
+                        <option value="11">Ивановские озера Хакасии</option>
+                        <option value="12">Южно-Чуйское кольцо</option>
+                        <option value="13">Приключения на Камчатке</option>
+                        <option value="14">Загадки Кольского полуострова</option>
+                        <option value="15">Солнечный Крым</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="rating-select">Оценка:</label>
+                    <select id="rating-select">
+                        <option value="all">Все оценки</option>
+                        <option value="5">★★★★★ - Отлично</option>
+                        <option value="4">★★★★☆ - Очень хорошо</option>
+                        <option value="3">★★★☆☆ - Хорошо</option>
+                        <option value="2">★★☆☆☆ - Удовлетворительно</option>
+                        <option value="1">★☆☆☆☆ - Плохо</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="reviews-container" id="reviews-container">
+                <!-- Reviews will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-carousel">
+        <div class="container">
+            <h2 class="section-title">Лучшие отзывы месяца</h2>
+            
+            <div class="testimonials-slider">
+                <div class="testimonial-slide">
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Анна" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Анна</h4>
+                            <p>Тур: Озеро Байкал</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <div class="testimonial-text">
+                        Это было самое незабываемое путешествие в моей жизни! Байкал поразил своей красотой и мощью. Организация на высшем уровне, гиды - профессионалы. Особенно запомнился поход по Кругобайкальской железной дороге - виды просто потрясающие!
+                    </div>
+                </div>
+                
+                <div class="testimonial-slide">
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Дмитрий" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Дмитрий</h4>
+                            <p>Тур: Сказочный Алтай</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <div class="testimonial-text">
+                        Алтай - это место силы! Тур превзошел все ожидания. Комфортабельные гостиницы, вкусная местная кухня, потрясающие маршруты. Отдельное спасибо гиду за интересные истории о местных традициях. Обязательно вернусь сюда снова!
+                    </div>
+                </div>
+                
+                <div class="testimonial-slide">
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Елена" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Елена</h4>
+                            <p>Тур: Золотое кольцо</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">★★★★☆</div>
+                    <div class="testimonial-text">
+                        Отличный тур для знакомства с историей России! Особенно понравились Суздаль и Ярославль - настоящие жемчужины русского зодчества. Хотелось бы немного больше свободного времени для самостоятельных прогулок, но в целом все было замечательно.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="add-review-section">
+        <div class="container">
+            <div class="add-review">
+                <h2>Оставить свой отзыв</h2>
+                <form id="review-form">
+                    <div class="form-group">
+                        <label for="author-name">Ваше имя:</label>
+                        <input type="text" id="author-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-tour">Тур:</label>
+                        <select id="review-tour" required>
+                            <option value="">Выберите тур</option>
+                            <option value="1">Золотое кольцо</option>
+                            <option value="2">Путешествие по Карелии</option>
+                            <option value="3">Сибирское путешествие</option>
+                            <option value="4">Сказочный Алтай</option>
+                            <option value="5">Дагестан</option>
+                            <option value="6">Северная Осетия</option>
+                            <option value="7">Приключения на Кавказе</option>
+                            <option value="8">Озеро Байкал</option>
+                            <option value="9">Сокровища Сахалина</option>
+                            <option value="10">Ингушетия</option>
+                            <option value="11">Ивановские озера Хакасии</option>
+                            <option value="12">Южно-Чуйское кольцо</option>
+                            <option value="13">Приключения на Камчатке</option>
+                            <option value="14">Загадки Кольского полуострова</option>
+                            <option value="15">Солнечный Крым</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ваша оценка:</label>
+                        <div class="stars-rating">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="Отлично">★</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="Очень хорошо">★</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="Хорошо">★</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="Удовлетворительно">★</label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="Плохо">★</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-text">Ваш отзыв:</label>
+                        <textarea id="review-text" placeholder="Расскажите о своих впечатлениях..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block">Отправить отзыв</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-vk"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>© 2025 Туризм России. Все права защищены.</p>
+            <p>Ваши впечатления - наша лучшая награда!</p>
+        </div>
+    </footer>
+
+    <script>
+        // Данные отзывов
+        const reviewsData = [
+            {
+                id: 1,
+                author: "Константин",
+                rating: "★★★★★",
+                date: "15.08.2024",
+                tourId: "1",
+                tourName: "Золотое кольцо",
+                text: 'В целом, тур был очень хорошо организован. Мы посетили множество исторических мест, и каждый день был насыщен событиями. Ярославль оставил самые яркие впечатления — его архитектура просто потрясающая! Единственный минус — иногда было мало свободного времени для прогулок, но это мелочи по сравнению с теми эмоциями, которые мы получили. Спасибо организаторам!'
+            },
+            {
+                id: 2,
+                author: "Екатерина",
+                rating: "★★★★★",
+                date: "10.07.2024",
+                tourId: "8",
+                tourName: "Озеро Байкал",
+                text: 'Тур "Озеро Байкал" превзошел все мои ожидания! Каждый день был насыщен интересными экскурсиями и уникальными моментами. Особенно запомнился мыс Хобой — виды с этого места просто завораживают! Проживание и питание были на высоком уровне, а наши гиды были очень профессиональными и дружелюбными. Я обязательно вернусь на Байкал!'
+            },
+            {
+                id: 3,
+                author: "Андрей",
+                rating: "★★★☆☆",
+                date: "25.06.2025",
+                tourId: "2",
+                tourName: "Путешествие по Карелии",
+                text: 'В целом, тур оставил положительные эмоции. Санкт-Петербург и Петрозаводск — прекрасные города с богатой историей. Экскурсии были хорошо организованы, а транспорт комфортный. Единственное, хотелось бы больше времени на самостоятельные прогулки в Петрозаводске и Сортавале. Но это не испортило общего впечатления. Спасибо организаторам за отличный отдых!'
+            },
+            {
+                id: 4,
+                author: "Людмила",
+                rating: "★★★★★",
+                date: "12.05.2025",
+                tourId: "7",
+                tourName: "Приключения на Кавказе",
+                text: 'Это было невероятное путешествие! Я в восторге от природы Кавказа — горы, водопады, альпийские луга. Особенно впечатлил поход в Приэльбрусье. Гиды были очень профессиональными и всегда готовы помочь. Ужин в ресторане с осетинской кухней стал настоящим кулинарным праздником. Спасибо организаторам за такой замечательный тур!'
+            },
+            {
+                id: 5,
+                author: "Генадий",
+                rating: "★★★☆☆",
+                date: "03.09.2023",
+                tourId: "3",
+                tourName: "Сибирское путешествие",
+                text: 'Тур оказался довольно интересным, но были моменты, которые можно было бы улучшить. Например, хотелось бы больше времени на самостоятельные прогулки в городах. Тем не менее, экскурсии были познавательными, а гиды — профессиональными. Природа Сибири действительно впечатляет, особенно во время походов в заповеднике. В целом, я остался доволен поездкой.'
+            },
+            {
+                id: 6,
+                author: "Иван",
+                rating: "★★★★★",
+                date: "12.05.2023",
+                tourId: "4",
+                tourName: "Сказочный Алтай",
+                text: 'Я в полном восторге от тура! Все дни были организованы на высшем уровне: от проживания до питания. Прогулка по Чуйскому тракту была просто незабываемой — горные пейзажи завораживают! Ужин в кемпинге с костром стал настоящим приключением. Я также приняла участие в мастер-классе по алтайским ремеслам и осталась довольна результатом. Обязательно вернусь сюда снова!'
+            },
+            {
+                id: 7,
+                author: "Игорь",
+                rating: "★★★★☆",
+                date: "15.07.2024",
+                tourId: "5",
+                tourName: "Дагестан",
+                text: 'Тур "Сокровища Дагестана" оставил положительное впечатление. Программа была насыщенной и интересной, особенно мне понравился Лезгинский национальный парк с его уникальной флорой и фауной. Однако я бы хотел больше времени на отдых на пляже Каспийского моря. В целом, это замечательный способ провести время с семьей и узнать новое!'
+            },
+            {
+                id: 8,
+                author: "Ева",
+                rating: "★★★★☆",
+                date: "18.08.2024",
+                tourId: "6",
+                tourName: "Северная Осетия",
+                text: 'Я осталась в полном восторге от тура! Каждый день был наполнен новыми открытиями и впечатлениями. Пеший поход по Цейскому ущелью стал одним из самых ярких моментов — природа просто потрясающая! Также мне понравился мастер-класс по приготовлению осетинских пирогов — это было весело и познавательно. Спасибо организаторам за чудесный отдых!'
+            },
+            {
+                id: 9,
+                author: "Лиза",
+                rating: "★★★★★",
+                date: "10.05.2025",
+                tourId: "9",
+                tourName: "Сокровища Сахалина",
+                text: 'Тур "Сокровища Сахалина" стал для меня настоящим открытием! Каждый день был насыщен интересными экскурсиями и потрясающими пейзажами. Особенно запомнился визит на остров Итуруп — горячие источники и водопады просто завораживают! Гиды были очень профессиональными и дружелюбными, а местная кухня не оставила равнодушной. Я рекомендую этот тур всем любителям природы и приключений!'
+            },
+            {
+                id: 10,
+                author: "Мария",
+                rating: "★★★★☆",
+                date: "11.09.2024",
+                tourId: "10",
+                tourName: "Ингушетия",
+                text: 'Это путешествие превзошло все мои ожидания! Ингушетия — невероятно красивый регион с богатой историей. Программа тура была насыщенной, но не утомительной. Я в восторге от музея ингушского народа — там столько интересного! Также хочу отметить качество проживания и питания — все было на высшем уровне. Спасибо организаторам за незабываемые впечатления!'
+            },
+            {
+                id: 11,
+                author: "Алла",
+                rating: "★★★★★",
+                date: "01.01.2025",
+                tourId: "10",
+                tourName: "Золотое кольцо",
+                text: 'Тур "Золотое кольцо" стал для меня настоящим открытием! Каждый день был наполнен интересными экскурсиями и новыми впечатлениями. Особенно запомнилась Троице-Сергиева лавра в Сергиевом Посаде — это место просто завораживает своей атмосферой. Проживание и питание были на высоком уровне, а гиды отлично знали материал. Рекомендую всем, кто хочет узнать больше о русской культуре и истории!'
+            },
+            {
+                id: 12,
+                author: "Анна",
+                rating: "★★★★★",
+                date: "01.08.2024",
+                tourId: "15",
+                tourName: "Солнечный Крым",
+                text: 'Тур "Солнечный Крым" превзошел все мои ожидания! Программа была насыщенной и интересной. Ялта с ее прекрасными парками и набережной оставила незабываемые впечатления. Особенно понравился Ливадийский дворец — его история и архитектура просто завораживают! Гид был очень профессионален и увлекательно рассказывал о каждом месте. Ужин в ресторане с видом на море стал настоящим романтическим моментом. Рекомендую всем!'
+            },
+            {
+                id: 13,
+                author: "Дмитрий",
+                rating: "★★★★★",
+                date: "08.08.2024",
+                tourId: "15",
+                tourName: "Солнечный Крым",
+                text: 'Отличный тур для тех, кто хочет увидеть самые красивые места Крыма за короткий срок. Севастополь и Балаклава были настоящими жемчужинами нашей поездки. Экскурсия на подводной лодке вызвала у меня восторг! Единственное, что хотелось бы улучшить — немного больше времени на свободные прогулки, особенно в Ялте. Но в целом, все было организовано очень хорошо!'
+            },
+            {
+                id: 14,
+                author: "Светлана",
+                rating: "★★★★☆",
+                date: "11.07.2024",
+                tourId: "15",
+                tourName: "Солнечный Крым",
+                text: 'Я в полном восторге от тура! Каждый день приносил новые открытия. Коктебель был идеальным местом для отдыха, а возможность заняться водными видами спорта добавила адреналина. Музей Михаила Волошина тоже произвел на меня впечатление. Ужин в кафе с крымской кухней стал настоящим кулинарным путешествием! Спасибо организаторам за этот замечательный опыт!'
+            },
+            {
+                id: 15,
+                author: "Алексей",
+                rating: "★★★★★",
+                date: "05.06.2023",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Прекрасный тур с разнообразной программой! Лапландский заповедник был настоящим раем для любителей природы. Мне понравилась возможность покормить оленей — это было незабываемо! Единственное, что хотелось бы улучшить, так это время на прогулки в Мурманске, но в целом, все было организовано очень хорошо. С удовольствием вернусь снова!'
+            },
+            {
+                id: 16,
+                author: "Ирина",
+                rating: "★★★★★",
+                date: "25.05.2024",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Тур "Загадки Кольского полуострова" стал для меня настоящим открытием! Мурманск оказался гораздо интереснее, чем я ожидала. Обзорная экскурсия была очень познавательной, а океанариум — настоящим украшением первого дня. Особенно запомнился подъем на Айкуайвенчорр — виды просто захватывающие! Наблюдение северного сияния стало финальным аккордом нашего путешествия. Рекомендую всем!'
+            },
+            {
+                id: 17,
+                author: "Наталья",
+                rating: "★★★★★",
+                date: "25.05.2025",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Это был один из лучших туров, в которых я когда-либо участвовала! Каждый день приносил новые впечатления. Петроглифы на Коле — это что-то невероятное, и экскурсия была отлично организована. Ужин в местных ресторанах тоже порадовал — мы попробовали настоящую северную кухню. Я в восторге от всего — от организации до природы!'
+            },
+            {
+                id: 18,
+                author: "Олег",
+                rating: "★★★★★",
+                date: "27.06.2023",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Я очень довольна этим туром! Программа была разнообразной, и каждый день мы открывали для себя что-то новое. Наблюдение северного сияния стало настоящим чудом — это было как в сказке! Гиды были очень дружелюбными и профессиональными. Питание было вкусным и сытным. Я обязательно порекомендую этот тур своим друзьям!'
+            }
+        ];
+
+        // Словарь названий туров
+        const tourNames = {
+            "1": "Золотое кольцо",
+            "2": "Путешествие по Карелии",
+            "3": "Сибирское путешествие",
+            "4": "Сказочный Алтай",
+            "5": "Дагестан",
+            "6": "Северная Осетия",
+            "7": "Приключения на Кавказе",
+            "8": "Озеро Байкал",
+            "9": "Сокровища Сахалина",
+            "10": "Ингушетия",
+            "11": "Ивановские озера Хакасии",
+            "12": "Южно-Чуйское кольцо",
+            "13": "Приключения на Камчатке",
+            "14": "Загадки Кольского полуострова",
+            "15": "Солнечный Крым"
+        };
+
+        // Функция для загрузки отзывов
+        function loadReviews() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tourIdFromUrl = urlParams.get('tour');
+            
+            // Если есть параметр tour в URL, устанавливаем его в выпадающем списке
+            if (tourIdFromUrl) {
+                const tourSelect = document.getElementById('tour-select');
+                tourSelect.value = tourIdFromUrl;
+            }
+            const reviewsContainer = document.getElementById('reviews-container');
+            const tourSelect = document.getElementById('tour-select');
+            const ratingSelect = document.getElementById('rating-select');
+            
+            const selectedTour = tourSelect.value;
+            const selectedRating = ratingSelect.value;
+            
+            // Добавляем/удаляем класс активного фильтра
+            if (selectedTour !== 'all' || selectedRating !== 'all') {
+                tourSelect.classList.add('active-filter');
+                ratingSelect.classList.add('active-filter');
+            } else {
+                tourSelect.classList.remove('active-filter');
+                ratingSelect.classList.remove('active-filter');
+            }
+            
+            reviewsContainer.innerHTML = ''; // Очищаем контейнер
+            
+            // Фильтруем отзывы
+            let filteredReviews = reviewsData;
+            
+            if (selectedTour !== 'all') {
+                filteredReviews = filteredReviews.filter(review => review.tourId === selectedTour);
+            }
+            
+            if (selectedRating !== 'all') {
+                const ratingMap = {
+                    "5": "★★★★★",
+                    "4": "★★★★☆",
+                    "3": "★★★☆☆",
+                    "2": "★★☆☆☆",
+                    "1": "★☆☆☆☆"
+                };
+                
+                filteredReviews = filteredReviews.filter(review => review.rating === ratingMap[selectedRating]);
+            }
+            
+            // Если нет отзывов, показываем сообщение
+            if (filteredReviews.length === 0) {
+                const noReviewsElement = document.createElement('div');
+                noReviewsElement.className = 'no-reviews';
+                noReviewsElement.innerHTML = `
+                    <i class="fas fa-comment-slash"></i>
+                    <p>Пока нет отзывов по выбранным критериям. Будьте первым, кто оставит отзыв!</p>
+                `;
+                reviewsContainer.appendChild(noReviewsElement);
+                return;
+            }
+            
+            // Создаем элементы отзывов
+            filteredReviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review-card';
+                reviewElement.setAttribute('data-tour', review.tourId);
+                
+                // Генерируем случайное количество лайков
+                const likesCount = Math.floor(Math.random() * 50) + 1;
+                
+                reviewElement.innerHTML = `
+                    <div class="review-card-header">
+                        <div class="review-author">${review.author}</div>
+                        <div class="review-rating">${review.rating}</div>
+                        <div class="review-date">${review.date}</div>
+                    </div>
+                    <div class="review-card-body">
+                        <div class="review-tour">Тур: ${review.tourName}</div>
+                        <div class="review-text">${review.text}</div>
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="review-likes"><i class="far fa-heart"></i> ${likesCount}</div>
+                        <div class="review-share"><i class="fas fa-share-alt"></i> Поделиться</div>
+                    </div>
+                `;
+                
+                reviewsContainer.appendChild(reviewElement);
+            });
+            
+            // Анимируем появление отзывов
+            animateReviews();
+            
+            // Добавляем обработчики событий для лайков
+            document.querySelectorAll('.review-likes').forEach(likeBtn => {
+                likeBtn.addEventListener('click', function() {
+                    if (this.classList.contains('liked')) {
+                        const currentLikes = parseInt(this.textContent.trim());
+                        this.innerHTML = `<i class="far fa-heart"></i> ${currentLikes - 1}`;
+                        this.classList.remove('liked');
+                    } else {
+                        const currentLikes = parseInt(this.textContent.trim());
+                        this.innerHTML = `<i class="fas fa-heart"></i> ${currentLikes + 1}`;
+                        this.classList.add('liked');
+                    }
+                });
+            });
+        }
+
+        // Функция для анимации отзывов
+        function animateReviews() {
+            const reviews = document.querySelectorAll('.review-card');
+            const windowHeight = window.innerHeight;
+            
+            reviews.forEach((review, index) => {
+                const reviewPosition = review.getBoundingClientRect().top;
+                const animationDelay = index * 0.1;
+                
+                if (reviewPosition < windowHeight - 100) {
+                    setTimeout(() => {
+                        review.classList.add('visible');
+                    }, animationDelay * 1000);
+                }
+            });
+        }
+
+        // Функция для добавления нового отзыва
+        function addNewReview(review) {
+            // Добавляем отзыв в массив
+            reviewsData.unshift(review);
+            
+            // Перезагружаем отзывы
+            loadReviews();
+            
+            // Прокручиваем к началу списка отзывов
+            document.getElementById('reviews-container').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.nav');
+        
+        menuToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            menuToggle.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Filter functionality
+        document.getElementById('tour-select').addEventListener('change', loadReviews);
+        document.getElementById('rating-select').addEventListener('change', loadReviews);
+        
+        // Обработка формы добавления отзыва
+        document.getElementById('review-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Получаем данные из формы
+            const authorName = document.getElementById('author-name').value;
+            const tourId = document.getElementById('review-tour').value;
+            const ratingValue = document.querySelector('input[name="rating"]:checked')?.value;
+            const reviewText = document.getElementById('review-text').value;
+            
+            if (!ratingValue) {
+                alert('Пожалуйста, выберите оценку');
+                return;
+            }
+            
+            // Создаем новый отзыв
+            const newReview = {
+                id: Date.now(), // Используем timestamp как уникальный ID
+                author: authorName,
+                rating: "★★★★★".slice(0, ratingValue) + "☆☆☆☆☆".slice(ratingValue),
+                date: new Date().toLocaleDateString('ru-RU'),
+                tourId: tourId,
+                tourName: tourNames[tourId],
+                text: reviewText
+            };
+            
+            // Добавляем отзыв
+            addNewReview(newReview);
+            
+            // Сбрасываем форму
+            this.reset();
+            
+            // Показываем уведомление
+            alert('Спасибо! Ваш отзыв успешно добавлен.');
+        });
+        
+        // Инициализация карусели отзывов
+        function initTestimonialsCarousel() {
+            const slider = document.querySelector('.testimonials-slider');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+            
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+            
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+            
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2;
+                slider.scrollLeft = scrollLeft - walk;
+            });
+        }
+        
+        // При загрузке страницы
+        window.addEventListener('load', function() {
+            // Загружаем отзывы
+            loadReviews();
+            
+            // Инициализируем карусель
+            initTestimonialsCarousel();
+            
+            // Добавляем обработчик прокрутки для анимации
+            window.addEventListener('scroll', animateReviews);
+        });
+        
+    </script>
+</body>
+</html>

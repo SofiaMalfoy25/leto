@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренды туризма в России</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2a5f8a;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --text: #333;
+            --text-light: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            padding: 10px 0;
+            background: rgba(42,95,138,0.98);
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav li {
+            margin-left: 30px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+        }
+        
+        .nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav a:hover:after, .nav a.active:after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            height: 50vh;
+            min-height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            margin-top: 70px;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .page-header p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        /* Breadcrumbs */
+        .breadcrumbs {
+            padding: 15px 0;
+            background-color: #f8f9fa;
+            margin-top: 70px;
+        }
+        
+        .breadcrumbs ul {
+            display: flex;
+            list-style: none;
+            font-size: 14px;
+        }
+        
+        .breadcrumbs li {
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .breadcrumbs li:after {
+            content: '›';
+            margin-left: 10px;
+            color: var(--text-light);
+        }
+        
+        .breadcrumbs li:last-child:after {
+            display: none;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumbs a:hover {
+            color: var(--accent);
+        }
+        
+        .breadcrumbs span {
+            color: var(--text-light);
+        }
+        
+        /* Tour Detail Section */
+        .section {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin: 50px;
+            margin-bottom: 40px;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .trends-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        trends-section h2{
+            padding: 80px 0;
+            background-color: white;
+        }
+        .trend-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .trend-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .trend-card h3 {
+            color: #3498db;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .trend-card .trend-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .trend-card .trend-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .trend-card .trend-icon {
+            font-size: 40px;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        /* Popular Tours */
+        .popular-tours {
+            margin-bottom: 60px;
+        }
+        
+        .tour-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .tour-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .tour-rank {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3498db;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .tour-info {
+            flex-grow: 1;
+        }
+        
+        .tour-info h4 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .tour-stats {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .tour-rating {
+            color: #f39c12;
+            margin-right: 15px;
+        }
+        
+        .tour-reviews {
+            display: flex;
+            align-items: center;
+        }
+        
+        .tour-reviews i {
+            margin-right: 5px;
+            color: #3498db;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 42px;
+            }
+            
+            .page-header p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background-color: rgba(42,95,138,0.98);
+                transition: all 0.5s ease;
+                padding: 20px 0;
+            }
+            
+            .nav.active {
+                left: 0;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav li {
+                margin: 15px 0;
+            }
+            
+            .page-header {
+                min-height: 350px;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .filters {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 50px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                min-height: 300px;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .tours-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+        }
+        
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animated {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">Туризм <span>России</span></div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="{{ url_for('main') }}">Главная</a></li>
+                    <li><a href="{{ url_for('blog') }}">Регионы</a></li>
+                    <li><a href="{{ url_for('tours') }}">Туры</a></li>
+                    <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
+                    <li><a href="{{ url_for('trends') }}" class="active">Тренды</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Тренды туризма в России</h1>
+            <p>Анализ популярности туров и предпочтений туристов</p>
+        </div>
+    </section>
+
+    <section class="trends-section">
+        <div class="container">
+            <h2 class="section-title">Ключевые показатели</h2>
+            
+            <div class="trends-container">
+                <div class="trend-card animated">
+                    <div class="trend-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Средний рейтинг</h3>
+                    <div class="trend-value" id="average-rating">4.6</div>
+                    <div class="trend-description">Средняя оценка всех туров по отзывам посетителей</div>
+                </div>
+                
+                <div class="trend-card animated delay-1">
+                    <div class="trend-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Самый популярный тур</h3>
+                    <div class="trend-value" id="top-tour">Байкал</div>
+                    <div class="trend-description">Наибольшее количество отзывов и высший средний рейтинг</div>
+                </div>
+                
+                <div class="trend-card animated delay-2">
+                    <div class="trend-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Всего отзывов</h3>
+                    <div class="trend-value" id="total-reviews">124</div>
+                    <div class="trend-description">Количество оставленных отзывов о всех турах</div>
+                </div>
+            </div>
+            
+            <div class="chart-container animated delay-1">
+                <h3 class="chart-title">Распределение оценок по турам</h3>
+                <canvas id="ratingsChart"></canvas>
+            </div>
+            
+            <div class="chart-container animated delay-2">
+                <h3 class="chart-title">Количество отзывов по турам</h3>
+                <canvas id="reviewsChart"></canvas>
+            </div>
+            
+            <div class="popular-tours animated delay-3">
+                <h2 class="section-title">Топ-5 самых популярных туров</h2>
+                
+                <div id="top-tours-list">
+                    <!-- Tours will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-vk"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>© 2025 Туризм России. Все права защищены.</p>
+            <p>Ваши впечатления - наша лучшая награда!</p>
+        </div>
+    </footer>
+
+    <script>
+        // Данные отзывов (из страницы reviews.html)
+        const reviewsData = [
+            {
+                id: 1,
+                author: "Константин",
+                rating: "★★★★★",
+                date: "15.08.2024",
+                tourId: "1",
+                tourName: "Золотое кольцо",
+                text: 'В целом, тур был очень хорошо организован. Мы посетили множество исторических мест, и каждый день был насыщен событиями. Ярославль оставил самые яркие впечатления — его архитектура просто потрясающая! Единственный минус — иногда было мало свободного времени для прогулок, но это мелочи по сравнению с теми эмоциями, которые мы получили. Спасибо организаторам!'
+            },
+            {
+                id: 2,
+                author: "Екатерина",
+                rating: "★★★★★",
+                date: "10.07.2024",
+                tourId: "8",
+                tourName: "Озеро Байкал",
+                text: 'Тур "Озеро Байкал" превзошел все мои ожидания! Каждый день был насыщен интересными экскурсиями и уникальными моментами. Особенно запомнился мыс Хобой — виды с этого места просто завораживают! Проживание и питание были на высоком уровне, а наши гиды были очень профессиональными и дружелюбными. Я обязательно вернусь на Байкал!'
+            },
+            {
+                id: 3,
+                author: "Андрей",
+                rating: "★★★☆☆",
+                date: "25.06.2025",
+                tourId: "2",
+                tourName: "Путешествие по Карелии",
+                text: 'В целом, тур оставил положительные эмоции. Санкт-Петербург и Петрозаводск — прекрасные города с богатой историей. Экскурсии были хорошо организованы, а транспорт комфортный. Единственное, хотелось бы больше времени на самостоятельные прогулки в Петрозаводске и Сортавале. Но это не испортило общего впечатления. Спасибо организаторам за отличный отдых!'
+            },
+            {
+                id: 4,
+                author: "Людмила",
+                rating: "★★★★★",
+                date: "12.05.2025",
+                tourId: "7",
+                tourName: "Приключения на Кавказе",
+                text: 'Это было невероятное путешествие! Я в восторге от природы Кавказа — горы, водопады, альпийские луга. Особенно впечатлил поход в Приэльбрусье. Гиды были очень профессиональными и всегда готовы помочь. Ужин в ресторане с осетинской кухней стал настоящим кулинарным праздником. Спасибо организаторам за такой замечательный тур!'
+            },
+            {
+                id: 5,
+                author: "Генадий",
+                rating: "★★★☆☆",
+                date: "03.09.2023",
+                tourId: "3",
+                tourName: "Сибирское путешествие",
+                text: 'Тур оказался довольно интересным, но были моменты, которые можно было бы улучшить. Например, хотелось бы больше времени на самостоятельные прогулки в городах. Тем не менее, экскурсии были познавательными, а гиды — профессиональными. Природа Сибири действительно впечатляет, особенно во время походов в заповеднике. В целом, я остался доволен поездкой.'
+            },
+            {
+                id: 6,
+                author: "Иван",
+                rating: "★★★★★",
+                date: "12.05.2023",
+                tourId: "4",
+                tourName: "Сказочный Алтай",
+                text: 'Я в полном восторге от тура! Все дни были организованы на высшем уровне: от проживания до питания. Прогулка по Чуйскому тракту была просто незабываемой — горные пейзажи завораживают! Ужин в кемпинге с костром стал настоящим приключением. Я также приняла участие в мастер-классе по алтайским ремеслам и осталась довольна результатом. Обязательно вернусь сюда снова!'
+            },
+            {
+                id: 7,
+                author: "Игорь",
+                rating: "★★★★☆",
+                date: "15.07.2024",
+                tourId: "5",
+                tourName: "Дагестан",
+                text: 'Тур "Сокровища Дагестана" оставил положительное впечатление. Программа была насыщенной и интересной, особенно мне понравился Лезгинский национальный парк с его уникальной флорой и фауной. Однако я бы хотел больше времени на отдых на пляже Каспийского моря. В целом, это замечательный способ провести время с семьей и узнать новое!'
+            },
+            {
+                id: 8,
+                author: "Ева",
+                rating: "★★★★☆",
+                date: "18.08.2024",
+                tourId: "6",
+                tourName: "Северная Осетия",
+                text: 'Я осталась в полном восторге от тура! Каждый день был наполнен новыми открытиями и впечатлениями. Пеший поход по Цейскому ущелью стал одним из самых ярких моментов — природа просто потрясающая! Также мне понравился мастер-класс по приготовлению осетинских пирогов — это было весело и познавательно. Спасибо организаторам за чудесный отдых!'
+            },
+            {
+                id: 9,
+                author: "Лиза",
+                rating: "★★★★★",
+                date: "10.05.2025",
+                tourId: "9",
+                tourName: "Сокровища Сахалина",
+                text: 'Тур "Сокровища Сахалина" стал для меня настоящим открытием! Каждый день был насыщен интересными экскурсиями и потрясающими пейзажами. Особенно запомнился визит на остров Итуруп — горячие источники и водопады просто завораживают! Гиды были очень профессиональными и дружелюбными, а местная кухня не оставила равнодушной. Я рекомендую этот тур всем любителям природы и приключений!'
+            },
+            {
+                id: 10,
+                author: "Мария",
+                rating: "★★★★☆",
+                date: "11.09.2024",
+                tourId: "10",
+                tourName: "Ингушетия",
+                text: 'Это путешествие превзошло все мои ожидания! Ингушетия — невероятно красивый регион с богатой историей. Программа тура была насыщенной, но не утомительной. Я в восторге от музея ингушского народа — там столько интересного! Также хочу отметить качество проживания и питания — все было на высшем уровне. Спасибо организаторам за незабываемые впечатления!'
+            },
+            {
+                id: 11,
+                author: "Алла",
+                rating: "★★★★★",
+                date: "01.01.2025",
+                tourId: "1",
+                tourName: "Золотое кольцо",
+                text: 'Тур "Золотое кольцо" стал для меня настоящим открытием! Каждый день был наполнен интересными экскурсиями и новыми впечатлениями. Особенно запомнилась Троице-Сергиева лавра в Сергиевом Посаде — это место просто завораживает своей атмосферой. Проживание и питание были на высоком уровне, а гиды отлично знали материал. Рекомендую всем, кто хочет узнать больше о русской культуре и истории!'
+            },
+            {
+                id: 12,
+                author: "Анна",
+                rating: "★★★★★",
+                date: "01.08.2024",
+                tourId: "15",
+                tourName: "Солнечный Крым",
+                text: 'Тур "Солнечный Крым" превзошел все мои ожидания! Программа была насыщенной и интересной. Ялта с ее прекрасными парками и набережной оставила незабываемые впечатления. Особенно понравился Ливадийский дворец — его история и архитектура просто завораживают! Гид был очень профессионален и увлекательно рассказывал о каждом месте. Ужин в ресторане с видом на море стал настоящим романтическим моментом. Рекомендую всем!'
+            },
+            {
+                id: 13,
+                author: "Дмитрий",
+                rating: "★★★★★",
+                date: "08.08.2024",
+                tourId: "15",
+                tourName: "Солнечный Крым",
+                text: 'Отличный тур для тех, кто хочет увидеть самые красивые места Крыма за короткий срок. Севастополь и Балаклава были настоящими жемчужинами нашей поездки. Экскурсия на подводной лодке вызвала у меня восторг! Единственное, что хотелось бы улучшить — немного больше времени на свободные прогулки, особенно в Ялте. Но в целом, все было организовано очень хорошо!'
+            },
+            {
+                id: 14,
+                author: "Светлана",
+                rating: "★★★★☆",
+                date: "11.07.2024",
+                tourId: "15",
+                tourName: "Солнечный Крым",
+                text: 'Я в полном восторге от тура! Каждый день приносил новые открытия. Коктебель был идеальным местом для отдыха, а возможность заняться водными видами спорта добавила адреналина. Музей Михаила Волошина тоже произвел на меня впечатление. Ужин в кафе с крымской кухней стал настоящим кулинарным путешествием! Спасибо организаторам за этот замечательный опыт!'
+            },
+            {
+                id: 15,
+                author: "Алексей",
+                rating: "★★★★★",
+                date: "05.06.2023",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Прекрасный тур с разнообразной программой! Лапландский заповедник был настоящим раем для любителей природы. Мне понравилась возможность покормить оленей — это было незабываемо! Единственное, что хотелось бы улучшить, так это время на прогулки в Мурманске, но в целом, все было организовано очень хорошо. С удовольствием вернусь снова!'
+            },
+            {
+                id: 16,
+                author: "Ирина",
+                rating: "★★★★★",
+                date: "25.05.2024",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Тур "Загадки Кольского полуострова" стал для меня настоящим открытием! Мурманск оказался гораздо интереснее, чем я ожидала. Обзорная экскурсия была очень познавательной, а океанариум — настоящим украшением первого дня. Особенно запомнился подъем на Айкуайвенчорр — виды просто захватывающие! Наблюдение северного сияния стало финальным аккордом нашего путешествия. Рекомендую всем!'
+            },
+            {
+                id: 17,
+                author: "Наталья",
+                rating: "★★★★★",
+                date: "25.05.2025",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Это был один из лучших туров, в которых я когда-либо участвовала! Каждый день приносил новые впечатления. Петроглифы на Коле — это что-то невероятное, и экскурсия была отлично организована. Ужин в местных ресторанах тоже порадовал — мы попробовали настоящую северную кухню. Я в восторге от всего — от организации до природы!'
+            },
+            {
+                id: 18,
+                author: "Олег",
+                rating: "★★★★★",
+                date: "27.06.2023",
+                tourId: "14",
+                tourName: "Загадки Кольского полуострова",
+                text: 'Я очень довольна этим туром! Программа была разнообразной, и каждый день мы открывали для себя что-то новое. Наблюдение северного сияния стало настоящим чудом — это было как в сказке! Гиды были очень дружелюбными и профессиональными. Питание было вкусным и сытным. Я обязательно порекомендую этот тур своим друзьям!'
+            },
+            {
+                id: 19,
+                author: "Ада",
+                rating: "★★★★☆",
+                date: "28.06.2023",
+                tourId: "11",
+                tourName: "Ивановские озера Хакасии",
+                text: 'Тур "Ивановские озера" превзошел все мои ожидания! Природа Хакасии просто завораживает — особенно Ивановские озера с их бирюзовой водой. Гиды были очень профессиональными и делились множеством интересных фактов. Ужин с традиционными хакасскими блюдами был настоящим кулинарным праздником! Обязательно вернусь сюда еще раз!'
+            },
+            {
+                id: 20,
+                author: "Савелий",
+                rating: "★★★★☆",
+                date: "30.06.2024",
+                tourId: "12",
+                tourName: "Южно-Чуйское кольцо",
+                text: 'Тур прошел на высоком уровне. Природа Алтая впечатляет своей красотой, а конные прогулки — это просто супер! Но я бы предложил добавить больше информации о местах, которые мы посещаем. Например, хотелось бы больше узнать о кургане "Скрижаль". В целом, я остался доволен и готов рекомендовать этот тур своим друзьям.'
+            }
+        ];
+
+        // Словарь названий туров
+        const tourNames = {
+            "1": "Золотое кольцо",
+            "2": "Путешествие по Карелии",
+            "3": "Сибирское путешествие",
+            "4": "Сказочный Алтай",
+            "5": "Дагестан",
+            "6": "Северная Осетия",
+            "7": "Приключения на Кавказе",
+            "8": "Озеро Байкал",
+            "9": "Сокровища Сахалина",
+            "10": "Ингушетия",
+            "11": "Ивановские озера Хакасии",
+            "12": "Южно-Чуйское кольцо",
+            "13": "Приключения на Камчатке",
+            "14": "Загадки Кольского полуострова",
+            "15": "Солнечный Крым"
+        };
+
+        // Функция для анализа данных отзывов
+        function analyzeReviews() {
+            // 1. Рассчитываем средний рейтинг
+            let totalRating = 0;
+            const ratingCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+            
+            reviewsData.forEach(review => {
+                const rating = (review.rating.match(/★/g) || []).length;
+                totalRating += rating;
+                ratingCounts[rating]++;
+            });
+            
+            const averageRating = (totalRating / reviewsData.length).toFixed(1);
+            document.getElementById('average-rating').textContent = averageRating;
+            
+            // 2. Находим самый популярный тур (по количеству отзывов)
+            const tourStats = {};
+            
+            reviewsData.forEach(review => {
+                if (!tourStats[review.tourId]) {
+                    tourStats[review.tourId] = {
+                        name: review.tourName,
+                        count: 0,
+                        totalRating: 0
+                    };
+                }
+                
+                const rating = (review.rating.match(/★/g) || []).length;
+                tourStats[review.tourId].count++;
+                tourStats[review.tourId].totalRating += rating;
+            });
+            
+            // Преобразуем в массив и сортируем
+            const sortedTours = Object.entries(tourStats).map(([id, data]) => ({
+                id,
+                name: data.name,
+                count: data.count,
+                avgRating: (data.totalRating / data.count).toFixed(1)
+            })).sort((a, b) => b.count - a.count || b.avgRating - a.avgRating);
+            
+            // Обновляем топ-тур
+            if (sortedTours.length > 0) {
+                document.getElementById('top-tour').textContent = sortedTours[0].name;
+            }
+            
+            // 3. Общее количество отзывов
+            document.getElementById('total-reviews').textContent = reviewsData.length;
+            
+            // 4. Создаем график распределения оценок
+            createRatingsChart(ratingCounts);
+            
+            // 5. Создаем график количества отзывов по турам
+            createReviewsChart(tourStats);
+            
+            // 6. Отображаем топ-5 туров
+            displayTopTours(sortedTours.slice(0, 5));
+        }
+        
+        // Функция для создания графика распределения оценок
+        function createRatingsChart(ratingCounts) {
+            const ctx = document.getElementById('ratingsChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['★☆☆☆☆ (1)', '★★☆☆☆ (2)', '★★★☆☆ (3)', '★★★★☆ (4)', '★★★★★ (5)'],
+                    datasets: [{
+                        label: 'Количество отзывов',
+                        data: [
+                            ratingCounts[1],
+                            ratingCounts[2],
+                            ratingCounts[3],
+                            ratingCounts[4],
+                            ratingCounts[5]
+                        ],
+                        backgroundColor: [
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(241, 196, 15, 0.7)',
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(155, 89, 182, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Количество отзывов'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Оценка'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Функция для создания графика количества отзывов по турам
+        function createReviewsChart(tourStats) {
+            // Сортируем туры по количеству отзывов
+            const sortedTours = Object.entries(tourStats)
+                .sort((a, b) => b[1].count - a[1].count)
+                .slice(0, 8); // Берем топ-8
+            
+            const ctx = document.getElementById('reviewsChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: sortedTours.map(([id, data]) => data.name),
+                    datasets: [{
+                        data: sortedTours.map(([id, data]) => data.count),
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)',
+                            'rgba(241, 196, 15, 0.7)',
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(26, 188, 156, 0.7)',
+                            'rgba(230, 126, 34, 0.7)',
+                            'rgba(149, 165, 166, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(26, 188, 156, 1)',
+                            'rgba(230, 126, 34, 1)',
+                            'rgba(149, 165, 166, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Функция для отображения топ-5 туров
+        function displayTopTours(topTours) {
+            const container = document.getElementById('top-tours-list');
+            container.innerHTML = '';
+            
+            topTours.forEach((tour, index) => {
+                const tourCard = document.createElement('div');
+                tourCard.className = 'tour-card';
+                
+                tourCard.innerHTML = `
+                    <div class="tour-rank">${index + 1}</div>
+                    <div class="tour-info">
+                        <h4>${tour.name}</h4>
+                        <div class="tour-stats">
+                            <div class="tour-rating">${'★'.repeat(Math.round(parseFloat(tour.avgRating)))}${'☆'.repeat(5 - Math.round(parseFloat(tour.avgRating)))}</div>
+                            <div class="tour-reviews">
+                                <i class="fas fa-comment"></i> ${tour.count} отзывов
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(tourCard);
+            });
+        }
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.nav');
+        
+        menuToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            menuToggle.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // При загрузке страницы
+        window.addEventListener('load', function() {
+            // Анализируем отзывы
+            analyzeReviews();
+            
+            // Анимация при прокрутке
+            animateElements();
+            
+            window.addEventListener('scroll', animateElements);
+        });
+        
+        // Функция для анимации элементов при прокрутке
+        function animateElements() {
+            const elements = document.querySelectorAll('.animated, .delay-1, .delay-2, .delay-3');
+            const windowHeight = window.innerHeight;
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+    </script>
+</body>
+</html>
