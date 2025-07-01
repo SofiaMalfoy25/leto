@@ -791,11 +791,11 @@
             </div>
             <nav class="nav">
                 <ul>
-                    <li><a href="{{ url_for('main') }}">Главная</a></li>
-                    <li><a href="{{ url_for('blog') }}">Регионы</a></li>
-                    <li><a href="{{ url_for('tours') }}">Туры</a></li>
-                    <li><a href="{{ url_for('reviews') }}" class="active">Отзывы</a></li>
-                    <li><a href="{{ url_for('trends') }}">Тренды</a></li>
+                    <li><a href="{{ url_for('main.main') }}">Главная</a></li>
+                    <li><a href="{{ url_for('main.blog') }}">Регионы</a></li>
+                    <li><a href="{{ url_for('main.tours') }}">Туры</a></li>
+                    <li><a href="{{ url_for('main.reviews') }}" class="active">Отзывы</a></li>
+                    <li><a href="{{ url_for('main.trends') }}">Тренды</a></li>
                 </ul>
             </nav>
         </div>

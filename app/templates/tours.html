@@ -508,11 +508,11 @@
             </div>
             <nav class="nav">
                 <ul>
-                    <li><a href="{{ url_for('main') }}">Главная</a></li>
-                    <li><a href="{{ url_for('blog') }}">Регионы</a></li>
-                    <li><a href="{{ url_for('tours') }}" class="active">Туры</a></li>
-                    <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
-                    <li><a href="{{ url_for('trends') }}">Тренды</a></li>
+                    <li><a href="{{ url_for('main.main') }}">Главная</a></li>
+                    <li><a href="{{ url_for('main.blog') }}">Регионы</a></li>
+                    <li><a href="{{ url_for('main.tours') }}" class="active">Туры</a></li>
+                    <li><a href="{{ url_for('main.reviews') }}">Отзывы</a></li>
+                    <li><a href="{{ url_for('main.trends') }}">Тренды</a></li>
                 </ul>
             </nav>
         </div>
@@ -649,12 +649,6 @@ function filterTours() {
     const tours = document.querySelectorAll('.tour-card');
     const noResultsMessage = document.getElementById('no-results');
     
-    // If no tour cards exist at all, hide the message and return
-    if (tours.length === 0) {
-        noResultsMessage.style.display = 'none';
-        return;
-    }
-    
     const region = document.getElementById('region').value;
     const type = document.getElementById('type').value;
     const priceRange = document.getElementById('price').value;
@@ -664,10 +658,10 @@ function filterTours() {
     tours.forEach(tour => {
         const tourRegion = tour.getAttribute('data-region');
         const tourType = tour.getAttribute('data-type');
-        const tourPrice = parseInt(tour.getAttribute('data-price'));
+        const tourPrice = parseFloat(tour.getAttribute('data-price'));
         
-        const regionMatch = region === 'all' || tourRegion === region;
-        const typeMatch = type === 'all' || tourType === type;
+        const regionMatch = region === 'all' || tourRegion.toLowerCase().includes(region);
+        const typeMatch = type === 'all' || tourType.toLowerCase().includes(type);
         
         let priceMatch = false;
         if (priceRange === 'all') {
@@ -690,8 +684,7 @@ function filterTours() {
         }
     });
     
-    // Show message only if there are cards but none matched filters
-    noResultsMessage.style.display = (visibleCount === 0 && tours.length > 0) ? 'block' : 'none';
+    noResultsMessage.style.display = visibleCount === 0 ? 'block' : 'none';
 }
 
 // Animation on scroll for tour cards

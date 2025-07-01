@@ -504,11 +504,11 @@
             </div>
             <nav class="nav">
                 <ul>
-                    <li><a href="{{ url_for('main') }}">Главная</a></li>
-                    <li><a href="{{ url_for('blog') }}">Регионы</a></li>
-                    <li><a href="{{ url_for('tours') }}">Туры</a></li>
-                    <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
-                    <li><a href="{{ url_for('trends') }}" class="active">Тренды</a></li>
+                    <li><a href="{{ url_for('main.main') }}">Главная</a></li>
+                    <li><a href="{{ url_for('main.blog') }}">Регионы</a></li>
+                    <li><a href="{{ url_for('main.tours') }}">Туры</a></li>
+                    <li><a href="{{ url_for('main.reviews') }}">Отзывы</a></li>
+                    <li><a href="{{ url_for('main.trends') }}" class="active">Тренды</a></li>
                 </ul>
             </nav>
         </div>
