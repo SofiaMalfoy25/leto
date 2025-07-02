@@ -5,120 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Детали тура | Туризм России</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #2a5f8a;
-            --secondary: #e74c3c;
-            --accent: #f39c12;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --text: #333;
-            --text-light: #6c757d;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text);
-            line-height: 1.6;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
-            color: white;
-            padding: 20px 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .header.scrolled {
-            padding: 10px 0;
-            background: rgba(42,95,138,0.98);
-        }
-        
-        .header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-        
-        .logo span {
-            color: var(--accent);
-        }
-        
-        /* Mobile menu toggle */
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 24px;
-            color: white;
-        }
-        
-        .nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav li {
-            margin-left: 30px;
-        }
-        
-        .nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            position: relative;
-            padding-bottom: 5px;
-        }
-        
-        .nav a:hover, .nav a.active {
-            color: var(--accent);
-        }
-        
-        .nav a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
-        }
-        
-        .nav a:hover:after, .nav a.active:after {
-            width: 100%;
-        }
-        
+    <style>        
         /* Page Header */
         .page-header {
             height: 50vh;
@@ -130,7 +20,6 @@
             align-items: center;
             text-align: center;
             position: relative;
-            margin-top: 70px;
         }
         
         .page-header .container {
@@ -526,43 +415,6 @@
             box-shadow: 0 0 0 3px rgba(42, 95, 138, 0.1);
         }
         
-        /* Footer */
-        .footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 40px 0 20px;
-            text-align: center;
-        }
-        
-        .footer p {
-            margin-bottom: 20px;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            margin: 0 10px;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-3px);
-        }
-        
         /* Responsive */
         @media (max-width: 1200px) {
             .tour-detail-grid {
@@ -689,45 +541,66 @@
             </div>
 
             <div class="tour-detail-grid">
-                <div class="tour-container">
-                    <div class="tour-header">
-                        <h1>{{ tour.name }}</h1>
-                        <div class="tour-meta">
-                            <span class="price">{{ tour.price }} руб.</span>
-                            <span class="duration">{{ tour.duration }}</span>
-                        </div>
+                <div class="tour-gallery">
+                    <div class="main-image">
+                        <img src="" alt="Изображение тура" id="main-image">
                     </div>
-                    
-                    <div class="tour-gallery">
-                        <img src="{{ url_for('static', filename='Img/' + tour.image) }}" alt="{{ tour.name }}">
+                    <div class="thumbnails" id="thumbnails-container">
+                        <!-- Thumbnails will be added dynamically -->
                     </div>
-                    
-                    <div class="tour-description">
-                        <h2>Описание тура</h2>
-                        <p>{{ tour.description }}</p>
+                </div>
+
+                <div class="tour-info">
+
+                    <h2>Программа тура</h2>
+                    <div id="tour-program" class="tour-program">
+                        <!-- Program days will be added dynamically -->
                     </div>
-                    
-                    <div class="tour-places">
-                        <h2>Основные места посещения</h2>
-                        <ul>
-                            {% for place in tour.places.split(';') %}
-                            <li>{{ place }}</li>
-                            {% endfor %}
-                        </ul>
+
+                    <h2>Включено в стоимость</h2>
+                    <ul id="tour-includes" class="tour-includes">
+                        <!-- Included items will be added dynamically -->
+                    </ul>
+
+                    <div class="tour-actions">
+                        <a href="reviews.html?tour=${currentTour.id}" class="btn btn-secondary">Посмотреть отзывы</a>
                     </div>
-                    
-                    <div class="related-tours">
-                        <h2>Похожие туры</h2>
-                        <div class="tours-grid">
-                            {% for tour in related_tours %}
-                            <div class="tour-card">
-                                <a href="{{ url_for('main.tour_detail', tour_id=tour.id) }}">
-                                    <img src="{{ url_for('static', filename='Img/' + tour.image) }}" alt="{{ tour.name }}">
-                                    <h3>{{ tour.name }}</h3>
-                                </a>
+
+                    <div class="booking-form" id="booking-form" style="display: none;">
+                        <h3>Забронировать тур</h3>
+                        <form id="tour-booking-form">
+                            <div class="form-group">
+                                <label for="name">Ваше имя</label>
+                                <input type="text" id="name" name="name" required>
                             </div>
-                            {% endfor %}
-                        </div>
+                            <div class="form-group">
+                                <label for="phone">Телефон</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Дата тура</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="persons">Количество человек</label>
+                                <select id="persons" name="persons">
+                                    <option value="1">1</option>
+                                    <option value="2" selected>2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5+">5+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="comments">Дополнительные пожелания</label>
+                                <textarea id="comments" name="comments" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отправить заявку</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -735,16 +608,52 @@
     </section>
 
     <footer class="footer">
-        <div class="container">
-            <div class="social-links">
-                <a href="#"><i class="fab fa-vk"></i></a>
-                <a href="#"><i class="fab fa-telegram"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+    <div class="container">
+        <div class="footer-grid">
+            <!-- Лого и описание -->
+            <div class="footer-brand">
+                <div class="logo">Туризм <span>России</span></div>
+                <p class="footer-description">Открываем для вас самые удивительные уголки нашей страны</p>
             </div>
-            <p>© 2025 Туризм России. Все права защищены.</p>
-            <p>Путешествуйте с нами и открывайте Россию заново!</p>
+
+            <!-- Быстрые ссылки -->
+            <div class="footer-links">
+                <h4>Навигация</h4>
+                <ul>
+                    <li><a href="main.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                    <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Регионы</a></li>
+                    <li><a href="tours.html"><i class="fas fa-chevron-right"></i> Туры</a></li>
+                    <li><a href="reviews.html"><i class="fas fa-chevron-right"></i> Отзывы</a></li>
+                    <li><a href="trends.html"><i class="fas fa-chevron-right"></i> Тренды</a></li>
+                </ul>
+            </div>
+
+            <!-- Контакты -->
+            <div class="footer-contacts">
+                <h4>Контакты</h4>
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <a href="tel:+79203299192">8 (920) 329-91-92</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:sofiaefimova083@gmail.com">sofiaefimova083@gmail.com</a>
+                </div>        
+                <!-- Социальные сети -->
+                <div class="social-links">
+                    <a href="#" class="social-btn vk" aria-label="ВКонтакте">
+                        <i class="fab fa-vk"></i>
+                    </a>
+                    <a href="#" class="social-btn tg" aria-label="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="#" class="social-btn wa" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
         </div>
+    </div>
     </footer>
     <script>
         // Mock data from your provided JS
@@ -757,7 +666,7 @@
             region: 'central',
             type: 'excursion',
             image: 'Img/goldring.png',
-            description: 'Тур по древним городам Северо-Восточной Руси, сохранившим уникальные памятники истории и культуры России. В программе: Сергиев Посад, Переславль-Залесский, Ростов Великий, Ярославль, Кострома, Иваново, Суздаль и Владимир.',
+            description: 'Тур по древним городам Северо-Восточной Руси, сохранившим уникальные памятники истории и культуры России. ',
             program: [
                 { day: 'День 1: Москва', description: 'Утро: прибытие в Москву и размещение в отеле.</p> День: обзорная экскурсия по Москве (Красная площадь, Кремль, Храм Василия Блаженного).</p> Вечер: ужин в ресторане с традиционной русской кухней.' },
                 { day: 'День 2: Сергиев Посад', description: 'Утро: завтрак в отеле, выезд в Сергиев Посад (70 км).</p> День: посещение Троице-Сергиевой лавры, экскурсия по монастырю.</p> Вечер: возвращение в Москву, свободное время.' },
@@ -1271,20 +1180,23 @@
                 console.error('Тур не найден');
                 return;
             }
+            // Устанавливаем фоновое изображение для баннера
+        const tourHeader = document.getElementById('tour-header');
+        tourHeader.style.background = `
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url('${tour.image}') no-repeat center center/cover
+        `;
     
         // 1. Заполняем основную информацию
         document.getElementById('tour-title').textContent = tour.title;
-        document.getElementById('tour-short-description').textContent = tour.description.substring(0, 100) + '...';
+        document.getElementById('tour-short-description').textContent = tour.description.substring(0);
         
         // Исправляем заполнение мета-данных (убираем +=)
         document.getElementById('tour-duration').innerHTML = `<i class="fas fa-calendar-alt"></i> Длительность: ${tour.duration}`;
         document.getElementById('tour-region').innerHTML = `<i class="fas fa-map-marker-alt"></i> Регион: ${getRegionName(tour.region)}`;
         document.getElementById('tour-type').innerHTML = `<i class="fas fa-tag"></i> Тип: ${getTypeName(tour.type)}`;
-        document.getElementById('tour-price').innerHTML = `<i class="fas fa-ruble-sign"></i> Цена: ${tour.price.toLocaleString('ru-RU')} руб.`;
+        document.getElementById('tour-price').innerHTML = `<i class="fas fa-ruble-sign"></i> Цена: ${tour.price.toLocaleString('ru-RU')} руб.`;        
         
-        
-        // 2. Заполняем описание тура
-        document.getElementById('tour-description').textContent = tour.description;
         
         // 3. Заполняем программу тура
         const programContainer = document.getElementById('tour-program');
