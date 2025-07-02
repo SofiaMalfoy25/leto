@@ -1,15 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Инициализация графиков
-    initCharts();
-    
-    // Обработка фильтров
-    document.getElementById('apply-trend-filters').addEventListener('click', function() {
-        updateCharts();
-    });
-});document.addEventListener('DOMContentLoaded', function() {
-    const reviewsData = [
-        {
+// Данные отзывов (из страницы reviews.html)
+        const reviewsData = [
+            {
             id: 1,
             author: "Константин",
             rating: "★★★★★",
@@ -260,245 +251,300 @@ document.addEventListener('DOMContentLoaded', function() {
             tourId: "15",
             tourName: "Солнечный Крым",
             text: 'Это был один из лучших туров в моей жизни! Природа Крыма просто завораживает, а экскурсии были очень информативными и увлекательными. Подъем на гору Ай-Петри стал одним из самых ярких моментов — виды оттуда просто потрясающие! Также хочу отметить отличное питание и комфортные условия проживания. Обязательно вернусь снова!'
+        },
+        {
+            id: 29,
+            author: "Семен",
+            rating: "★☆☆☆☆",
+            date: "10.10.2024",
+            tourId: "5",
+            tourName: "Дагестан",
+            text:'Хотя Дагестан — это красивое место, тур "Сокровища Дагестана" не оправдал моих ожиданий. Программа была слишком насыщенной, и мы часто чувствовали усталость от постоянных переездов. Уровень сервиса в отелях был ниже среднего: в одном из них нам даже не поменяли полотенца! Питание было довольно простым и однообразным. В итоге, я не получил того удовольствия от путешествия, на которое рассчитывал.'
+        },
+        {
+            id: 30,
+            author: "Максим",
+            rating: "★★☆☆☆",
+            date: "27.11.2024",
+            tourId: "5",
+            tourName: "Дагестан",
+            text:'Тур был полон разочарований. Программа была перегружена, и мы не успевали насладиться каждым местом. В Гергебиле мы провели слишком мало времени, чтобы оценить красоту природы. К тому же, ночевка в гостевом доме была крайне неудобной — шумные соседи не давали уснуть. Отношение гида тоже оставляло желать лучшего: он не проявлял интереса к группе и не отвечал на наши вопросы. Я не рекомендую этот тур никому.'
+            }
+        ];
+
+        // Словарь названий туров
+        const tourNames = {
+            "1": "Золотое кольцо",
+            "2": "Путешествие по Карелии",
+            "3": "Сибирское путешествие",
+            "4": "Сказочный Алтай",
+            "5": "Дагестан",
+            "6": "Северная Осетия",
+            "7": "Приключения на Кавказе",
+            "8": "Озеро Байкал",
+            "9": "Сокровища Сахалина",
+            "10": "Ингушетия",
+            "11": "Ивановские озера Хакасии",
+            "12": "Южно-Чуйское кольцо",
+            "13": "Приключения на Камчатке",
+            "14": "Загадки Кольского полуострова",
+            "15": "Солнечный Крым"
+        };
+
+        // Функция для анализа данных отзывов
+        function analyzeReviews() {
+            // 1. Рассчитываем средний рейтинг
+            let totalRating = 0;
+            const ratingCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+            
+            reviewsData.forEach(review => {
+                const rating = (review.rating.match(/★/g) || []).length;
+                totalRating += rating;
+                ratingCounts[rating]++;
+            });
+            
+            const averageRating = (totalRating / reviewsData.length).toFixed(1);
+            document.getElementById('average-rating').textContent = averageRating;
+            
+            // 2. Находим самый популярный тур (по количеству отзывов)
+            const tourStats = {};
+            
+            reviewsData.forEach(review => {
+                if (!tourStats[review.tourId]) {
+                    tourStats[review.tourId] = {
+                        name: review.tourName,
+                        count: 0,
+                        totalRating: 0
+                    };
+                }
+                
+                const rating = (review.rating.match(/★/g) || []).length;
+                tourStats[review.tourId].count++;
+                tourStats[review.tourId].totalRating += rating;
+            });
+            
+            // Преобразуем в массив и сортируем
+            const sortedTours = Object.entries(tourStats).map(([id, data]) => ({
+                id,
+                name: data.name,
+                count: data.count,
+                avgRating: (data.totalRating / data.count).toFixed(1)
+            })).sort((a, b) => b.count - a.count || b.avgRating - a.avgRating);
+            
+            // Обновляем топ-тур
+            if (sortedTours.length > 0) {
+                document.getElementById('top-tour').textContent = sortedTours[0].name;
+            }
+            
+            // 3. Общее количество отзывов
+            document.getElementById('total-reviews').textContent = reviewsData.length;
+            
+            // 4. Создаем график распределения оценок
+            createRatingsChart(ratingCounts);
+            
+            // 5. Создаем график количества отзывов по турам
+            createReviewsChart(tourStats);
+            
+            // 6. Отображаем топ-5 туров
+            displayTopTours(sortedTours.slice(0, 5));
         }
-    ];
-    // Инициализация графиков с данными из отзывов
-    initCharts(reviewsData);
-    
-    // Обработка фильтров
-    document.getElementById('apply-trend-filters').addEventListener('click', function() {
-        updateCharts(reviewsData);
-    });
-});
-// Header scroll effect
-window.addEventListener('scroll', function() {
-    const header = document.querySelector('.header');
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
-});
-
-// Mobile menu toggle
-const menuToggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.nav');
-
-menuToggle.addEventListener('click', function() {
-    nav.classList.toggle('active');
-    menuToggle.innerHTML = nav.classList.contains('active') ? 
-        '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-});
-
-// Close menu when clicking on a link
-document.querySelectorAll('.nav a').forEach(link => {
-    link.addEventListener('click', () => {
-        nav.classList.remove('active');
-        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-    });
-});
-
-// Hide filters on scroll down, show on scroll up
-let lastScroll = 0;
-const filters = document.querySelector('.trends-filters');
-const filtersHeight = filters.offsetHeight;
-const headerHeight = document.querySelector('.header').offsetHeight;
-const scrollOffset = headerHeight + filtersHeight;
-
-window.addEventListener('scroll', function() {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll <= scrollOffset) {
-        filters.classList.remove('hidden');
-        return;
-    }
-    
-    if (currentScroll > lastScroll && !filters.classList.contains('hidden')) {
-        // Scroll down
-        filters.classList.add('hidden');
-    } else if (currentScroll < lastScroll && filters.classList.contains('hidden')) {
-        // Scroll up
-        filters.classList.remove('hidden');
-    }
-    
-    lastScroll = currentScroll;
-});
-
-// Animation on scroll for trend cards
-function animateCards() {
-    const cards = document.querySelectorAll('.trend-card');
-    const windowHeight = window.innerHeight;
-    
-    cards.forEach((card, index) => {
-        const cardPosition = card.getBoundingClientRect().top;
-        const animationDelay = index * 0.1;
         
-        if (cardPosition < windowHeight - 100) {
-            card.classList.add('animated');
-            card.style.transitionDelay = `${animationDelay}s`;
+        // Функция для создания графика распределения оценок
+        function createRatingsChart(ratingCounts) {
+            const ctx = document.getElementById('ratingsChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['★☆☆☆☆', '★★☆☆☆', '★★★☆☆', '★★★★☆', '★★★★★'],
+                    datasets: [{
+                        label: 'Количество отзывов',
+                        data: [
+                            ratingCounts[1],
+                            ratingCounts[2],
+                            ratingCounts[3],
+                            ratingCounts[4],
+                            ratingCounts[5]
+                        ],
+                        backgroundColor: [
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(241, 196, 15, 0.7)',
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(155, 89, 182, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Количество отзывов'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Оценка'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
         }
-    });
-}
-
-// Initialize animations
-window.addEventListener('load', animateCards);
-window.addEventListener('scroll', animateCards);
-function initCharts() {
-    // График популярных регионов
-    const regionsCtx = document.getElementById('popularRegionsChart').getContext('2d');
-    const regionsChart = new Chart(regionsCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Карелия', 'Байкал', 'Камчатка', 'Золотое кольцо', 'Крым', 'Алтай'],
-            datasets: [{
-                label: 'Количество туристов',
-                data: [1250, 980, 870, 760, 680, 520],
-                backgroundColor: [
-                    'rgba(42, 95, 143, 0.7)',
-                    'rgba(58, 127, 191, 0.7)',
-                    'rgba(74, 159, 239, 0.7)',
-                    'rgba(231, 76, 60, 0.7)',
-                    'rgba(243, 156, 18, 0.7)',
-                    'rgba(46, 204, 113, 0.7)'
-                ],
-                borderColor: [
-                    'rgba(42, 95, 143, 1)',
-                    'rgba(58, 127, 191, 1)',
-                    'rgba(74, 159, 239, 1)',
-                    'rgba(231, 76, 60, 1)',
-                    'rgba(243, 156, 18, 1)',
-                    'rgba(46, 204, 113, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
+        
+        // Функция для создания графика количества отзывов по турам
+        function createReviewsChart(tourStats) {
+            // Сортируем туры по количеству отзывов
+            const sortedTours = Object.entries(tourStats)
+                .sort((a, b) => b[1].count - a[1].count)
+                .slice(0, 8); // Берем топ-8
+            
+            const ctx = document.getElementById('reviewsChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: sortedTours.map(([id, data]) => data.name),
+                    datasets: [{
+                        data: sortedTours.map(([id, data]) => data.count),
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)',
+                            'rgba(241, 196, 15, 0.7)',
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(26, 188, 156, 0.7)',
+                            'rgba(230, 126, 34, 0.7)',
+                            'rgba(149, 165, 166, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(26, 188, 156, 1)',
+                            'rgba(230, 126, 34, 1)',
+                            'rgba(149, 165, 166, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
                 }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+            });
+        }
+        
+        // Функция для отображения топ-5 туров
+        function displayTopTours(topTours) {
+            const container = document.getElementById('top-tours-list');
+            container.innerHTML = '';
+            
+            topTours.forEach((tour, index) => {
+                const tourCard = document.createElement('div');
+                tourCard.className = 'tour-card';
+                
+                tourCard.innerHTML = `
+                    <div class="tour-rank">${index + 1}</div>
+                    <div class="tour-info">
+                        <h4>${tour.name}</h4>
+                        <div class="tour-stats">
+                            <div class="tour-rating">${'★'.repeat(Math.round(parseFloat(tour.avgRating)))}${'☆'.repeat(5 - Math.round(parseFloat(tour.avgRating)))}</div>
+                            <div class="tour-reviews">
+                                <i class="fas fa-comment"></i> ${tour.count} отзывов
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(tourCard);
+            });
+        }
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
-        }
-    });
-
-    // График сезонности
-    const seasonalityCtx = document.getElementById('seasonalityChart').getContext('2d');
-    const seasonalityChart = new Chart(seasonalityCtx, {
-        type: 'line',
-        data: {
-            labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-            datasets: [{
-                label: 'Активность туристов',
-                data: [15, 20, 35, 55, 80, 95, 100, 98, 75, 50, 30, 20],
-                fill: true,
-                backgroundColor: 'rgba(42, 95, 143, 0.1)',
-                borderColor: 'rgba(42, 95, 143, 1)',
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.nav');
+        
+        menuToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            menuToggle.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // При загрузке страницы
+        window.addEventListener('load', function() {
+            // Анализируем отзывы
+            analyzeReviews();
+            
+            // Анимация при прокрутке
+            animateElements();
+            
+            window.addEventListener('scroll', animateElements);
+        });
+        
+        // Функция для анимации элементов при прокрутке
+        function animateElements() {
+            const elements = document.querySelectorAll('.animated, .delay-1, .delay-2, .delay-3');
+            const windowHeight = window.innerHeight;
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.classList.add('visible');
                 }
-            }
+            });
         }
-    });
-
-    // График бюджетов
-    const budgetCtx = document.getElementById('budgetChart').getContext('2d');
-    const budgetChart = new Chart(budgetCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['До 20 тыс.', '20-50 тыс.', '50-100 тыс.', 'Более 100 тыс.'],
-            datasets: [{
-                data: [25, 45, 20, 10],
-                backgroundColor: [
-                    'rgba(42, 95, 143, 0.7)',
-                    'rgba(58, 127, 191, 0.7)',
-                    'rgba(74, 159, 239, 0.7)',
-                    'rgba(231, 76, 60, 0.7)'
-                ],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }
-    });
-
-    // График типов путешественников
-    const travelersCtx = document.getElementById('travelerTypesChart').getContext('2d');
-    const travelersChart = new Chart(travelersCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Семьи', 'Пары', 'Соло', 'Друзья'],
-            datasets: [{
-                data: [40, 30, 15, 15],
-                backgroundColor: [
-                    'rgba(42, 95, 143, 0.7)',
-                    'rgba(231, 76, 60, 0.7)',
-                    'rgba(243, 156, 18, 0.7)',
-                    'rgba(46, 204, 113, 0.7)'
-                ],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }
-    });
-
-    // Сохраняем ссылки на графики для обновления
-    window.trendCharts = {
-        regions: regionsChart,
-        seasonality: seasonalityChart,
-        budget: budgetChart,
-        travelers: travelersChart
-    };
-}
-
-function updateCharts() {
-    const period = document.getElementById('time-period').value;
-    const travelerType = document.getElementById('traveler-type').value;
-    
-    // Здесь должен быть реальный запрос к API с фильтрами
-    // Для демо просто обновим данные случайным образом
-    
-    // Обновляем график популярных регионов
-    const newRegionsData = Array(6).fill().map(() => Math.floor(Math.random() * 500) + 500);
-    window.trendCharts.regions.data.datasets[0].data = newRegionsData;
-    window.trendCharts.regions.update();
-    
-    // Обновляем график сезонности
-    const newSeasonData = Array(12).fill().map(() => Math.floor(Math.random() * 50) + 50);
-    window.trendCharts.seasonality.data.datasets[0].data = newSeasonData;
-    window.trendCharts.seasonality.update();
-    
-    // Показываем загрузку
-    document.getElementById('apply-trend-filters').textContent = 'Загрузка...';
-    setTimeout(() => {
-        document.getElementById('apply-trend-filters').textContent = 'Применить';
-    }, 800);
-}
+        
