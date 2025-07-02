@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMobileMenu() {
     const menuToggle = document.createElement('div');
     menuToggle.className = 'menu-toggle';
+    menuToggle.innerHTML = '☰';
     menuToggle.addEventListener('click', function() {
         const nav = document.querySelector('.nav ul');
         nav.classList.toggle('active');
@@ -48,6 +49,7 @@ function initImageGallery() {
         });
     });
 }
+
 function initToursPage() {
     loadTours();
     
@@ -140,16 +142,15 @@ function getTypeName(type) {
         'excursion': 'Экскурсионный',
         'active': 'Активный',
         'beach': 'Пляжный',
-        'ski': 'Горнолыжный',
         'hourse': 'Конный'
     };
     return types[type] || type;
 }
 
 function getPriceRange(price) {
-    if (price < 20000) return '0-20000';
+    if (price < 40000) return '0-20000';
     if (price < 50000) return '20000-50000';
-    if (price < 100000) return '50000-100000';
+    if (price < 70000) return '50000-100000';
     return '100000+';
 }
 
@@ -201,7 +202,7 @@ function getMockTours() {
             duration: '6 дней',
             price: 45000,
             region: 'siberia',
-            type: 'active',
+            type: 'excursion',
             image: 'Img/алтай.jpg'
         },
         {
@@ -210,7 +211,7 @@ function getMockTours() {
             duration: '7 дней',
             price: 50000,
             region: 'kavkaz',
-            type: 'active',
+            type: 'excursion',
             image: 'Img/дагестан.webp'
         },
         {
@@ -246,7 +247,7 @@ function getMockTours() {
             duration: '7 дней',
             price: 55000,
             region: 'far-east',
-            type: 'ski',
+            type: 'excursion',
             image: 'Img/dombay.jpg'
         },
         {
@@ -255,7 +256,7 @@ function getMockTours() {
             duration: '5 дней',
             price: 45000,
             region: 'kavkaz',
-            type: 'ski',
+            type: 'active',
             image: 'Img/ingushetia.webp'
         },
         {
@@ -264,7 +265,7 @@ function getMockTours() {
             duration: '4 дней',
             price: 38000,
             region: 'siberia',
-            type: 'ski',
+            type: 'active',
             image: 'https://avatars.mds.yandex.net/i?id=1d6829510122e0ee0b177c2c0afa8ecb_l-10842658-images-thumbs&n=13'
         },
         {
@@ -422,7 +423,7 @@ function loadTourDetails(tourId) {
             duration: '6 дней',
             price: 75000,
             region: 'siberia',
-            type: 'active',
+            type: 'excursion',
             image: 'Img/алтай.jpg',
             description: '"Сказочный Алтай" – это увлекательное путешествие по одному из самых живописных регионов России, где вас ждут горные пейзажи, чистейшие озёра, густые леса и богатая культура.',
             program: [
@@ -452,7 +453,7 @@ function loadTourDetails(tourId) {
             duration: '7 дней',
             price: 50000,
             region: 'kavkaz',
-            type: 'active',
+            type: 'excursion',
             image: 'Img/дагестан.webp',
             description: 'Тур по Дагестану — это отличная возможность познакомиться с уникальной культурой, природой и традициями этого удивительного региона России. Дагестан богат историческими достопримечательностями, горными пейзажами, древними аулами и гостеприимными людьми.',
             program: [
@@ -574,7 +575,7 @@ function loadTourDetails(tourId) {
             duration: '7 дней',
             price: 55000,
             region: 'far-east',
-            type: 'ski',
+            type: 'excursion',
             image: 'Img/dombay.jpg',
             description: '"Сокровища Сахалина" – это увлекательное путешествие по одному из самых загадочных и живописных регионов России. Сахалин, крупнейший остров страны, славится уникальной природой, богатой историей и культурным наследием.',
             program: [
@@ -605,7 +606,7 @@ function loadTourDetails(tourId) {
             duration: '5 дней',
             price: 45000,
             region: 'kavkaz',
-            type: 'ski',
+            type: 'active',
             image: 'Img/ingushetia.webp',
             description: 'Тур по Ингушетии – это уникальное путешествие в один из самых живописных и загадочных регионов Северного Кавказа. Ингушетия славится древними башенными комплексами, величественными горами, богатой культурой и гостеприимством местных жителей.',
             program: [
