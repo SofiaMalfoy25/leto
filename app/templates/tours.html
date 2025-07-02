@@ -8,129 +8,129 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2a5f8a;
-            --secondary: #e74c3c;
-            --accent: #f39c12;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --text: #333;
-            --text-light: #6c757d;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text);
-            line-height: 1.6;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
-            color: white;
-            padding: 20px 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .header.scrolled {
-            padding: 10px 0;
-            background: rgba(42,95,138,0.98);
-        }
-        
-        .header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-        
-        .logo span {
-            color: var(--accent);
-        }
-        
-        /* Mobile menu toggle */
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 24px;
-            color: white;
-        }
-        
-        .nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav li {
-            margin-left: 30px;
-        }
-        
-        .nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            position: relative;
-            padding-bottom: 5px;
-        }
-        
-        .nav a:hover, .nav a.active {
-            color: var(--accent);
-        }
-        
-        .nav a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
-        }
-        
-        .nav a:hover:after, .nav a.active:after {
-            width: 100%;
-        }
+                --primary: #2a5f8a;
+                --secondary: #e74c3c;
+                --accent: #f39c12;
+                --light: #f8f9fa;
+                --dark: #343a40;
+                --text: #333;
+                --text-light: #6c757d;
+            }
+            
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Montserrat', sans-serif;
+                color: var(--text);
+                line-height: 1.6;
+                background-color: #f5f5f5;
+                padding-top: 80px;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+            
+            /* Header */
+            .header {
+                background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
+                color: white;
+                padding: 20px 0;
+                position: fixed;
+                width: 100%;
+                top: 0;
+                z-index: 1000;
+                box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .header.scrolled {
+                padding: 10px 0;
+                background: rgba(42,95,138,0.98);
+            }
+            
+            .header .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 28px;
+                font-weight: 700;
+                color: white;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            }
+            
+            .logo span {
+                color: var(--accent);
+            }
+            
+            /* Mobile menu toggle */
+            .menu-toggle {
+                display: none;
+                cursor: pointer;
+                font-size: 24px;
+                color: white;
+            }
+            
+            .nav ul {
+                display: flex;
+                list-style: none;
+            }
+            
+            .nav li {
+                margin-left: 30px;
+            }
+            
+            .nav a {
+                color: white;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            
+            .nav a:hover, .nav a.active {
+                color: var(--accent);
+            }
+            
+            .nav a:after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--accent);
+                transition: width 0.3s ease;
+            }
+            
+            .nav a:hover:after, .nav a.active:after {
+                width: 100%;
+            }
         
         /* Page Header */
         .page-header {
             height: 50vh;
             min-height: 400px;
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                        url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+                        url('https://avatars.mds.yandex.net/i?id=7aa1881472ea60465f6089491a8298bb_l-4902400-images-thumbs&n=13') no-repeat center center/cover;
             color: white;
             display: flex;
             align-items: center;
             text-align: center;
             position: relative;
-            margin-top: 70px;
         }
         
         .page-header .container {
@@ -370,40 +370,166 @@
         
         /* Footer */
         .footer {
-            background-color: var(--dark);
+            background: linear-gradient(135deg, rgba(42,95,138,0.9) 0%, rgba(58,123,180,0.9) 100%);
             color: white;
-            padding: 40px 0 20px;
-            text-align: center;
-        }
-        
-        .footer p {
-            margin-bottom: 20px;
-        }
-        
-        .social-links {
+            padding: 60px 0 0;
+            position: relative;
+            overflow: hidden;
+            }
+
+            .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+            }
+
+            .footer-brand {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            }
+
+            .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
+            }
+
+            .logo span {
+            color: #f39c12;
+            }
+
+            .footer-description {
             margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .social-links a {
-            display: inline-flex;
+            line-height: 1.6;
+            opacity: 0.9;
+            max-width: 300px;
+            }
+
+            .footer-links h4,
+            .footer-contacts h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            }
+
+            .footer-links h4:after,
+            .footer-contacts h4:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: #f39c12;
+            }
+
+            .footer-links ul {
+            list-style: none;
+            padding: 0;
+            }
+
+            .footer-links li {
+            margin-bottom: 12px;
+            }
+
+            .footer-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
             align-items: center;
-            justify-content: center;
+            }
+
+            .footer-links a:hover {
+            color: #f39c12;
+            transform: translateX(5px);
+            }
+
+            .footer-links i {
+            margin-right: 8px;
+            font-size: 12px;
+            color: #f39c12;
+            }
+
+            .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            }
+
+            .contact-item i {
+            margin-right: 10px;
+            color: #f39c12;
+            width: 20px;
+            text-align: center;
+            }
+
+            .contact-item a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: color 0.3s;
+            }
+
+            .contact-item a:hover {
+            color: #f39c12;
+            }
+
+            .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            }
+
+            .social-btn {
             width: 40px;
             height: 40px;
-            background-color: rgba(255,255,255,0.1);
             border-radius: 50%;
-            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-3px);
-        }
+            font-size: 18px;
+            transition: all 0.3s;
+            }
+
+            .vk { background: #4a76a8; }
+            .tg { background: #0088cc; }
+            .wa { background: #25D366; }
+
+            .social-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+
+            .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            }
+
+            .copyright {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            }
+
+            .footer-meta {
+            text-align: right;
+            color: rgba(255,255,255,0.7);
+            font-style: italic;
+            font-size: 14px;
+            }
+
+            .footer-meta p {
+            margin: 5px 0;
+            }
         
         /* Responsive */
         @media (max-width: 1200px) {
@@ -508,11 +634,11 @@
             </div>
             <nav class="nav">
                 <ul>
-                    <li><a href="{{ url_for('main.main') }}">Главная</a></li>
-                    <li><a href="{{ url_for('main.blog') }}">Регионы</a></li>
-                    <li><a href="{{ url_for('main.tours') }}" class="active">Туры</a></li>
-                    <li><a href="{{ url_for('main.reviews') }}">Отзывы</a></li>
-                    <li><a href="{{ url_for('main.trends') }}">Тренды</a></li>
+                    <li><a href="main.html">Главная</a></li>
+                    <li><a href="blog.html">Регионы</a></li>
+                    <li><a href="tours.html" class="active">Туры</a></li>
+                    <li><a href="reviews.html">Отзывы</a></li>
+                    <li><a href="trends.html">Тренды</a></li>
                 </ul>
             </nav>
         </div>
@@ -547,18 +673,16 @@
                         <option value="excursion">Экскурсионный</option>
                         <option value="active">Активный</option>
                         <option value="beach">Пляжный</option>
-                        <option value="ski">Горнолыжный</option>
                         <option value="hourse">Конный</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="price">Цена:</label>
                     <select id="price">
                         <option value="all">Любая</option>
-                        <option value="0-40000">До 40 000 руб.</option>
-                        <option value="40000-50000">40 000 - 50 000 руб.</option>
-                        <option value="50000-70000">50 000 - 70 000 руб.</option>
-                        <option value="70000+">От 70 000 руб.</option>
+                        <option value="0-40000">30 000 - 50 000 руб.</option>
+                        <option value="40000-50000">50 000 - 60 000 руб.</option>
+                        <option value="50000-70000">60 000 - 70 000 руб.</option>
+                        <option value="70000+">70 000 - 80 000 руб.</option>
                     </select>
                 </div>
             </div>
@@ -569,30 +693,7 @@
         <div class="container">
             <h2 class="section-title">Наши туры</h2>
             <div class="tours-grid">
-                {% for tour in tours %}
-                <div class="tour-card" 
-                    data-region="{{ tour.region|lower }}"
-                    data-type="{{ tour.type|default('excursion')|lower }}"
-                    data-price="{{ tour.price }}">
-                    <img src="{{ url_for('static', filename='Img/' + tour.image) }}" alt="{{ tour.name }}">
-                    <div class="tour-card-content">
-                        <h3>{{ tour.name }}</h3>
-                        <div class="meta">
-                            <span><i class="fas fa-map-marker-alt"></i> {{ tour.region }}</span>
-                            <span class="type">{{ tour.type|default('Экскурсионный') }}</span>
-                        </div>
-                        <div class="description">
-                            {{ tour.description|truncate(120) }}
-                        </div>
-                        <div class="price">{{ tour.price|int }} руб.</div>
-                        <a href="{{ url_for('main.tour_detail', tour_id=tour.id) }}" class="btn">Подробнее</a>
-                    </div>
-                </div>
-                {% else %}
-                <div class="no-results-message">
-                    <p>Туры не найдены</p>
-                </div>
-                {% endfor %}
+                <!-- Туры будут загружаться через JavaScript -->
             </div>
             <div id="no-results" class="no-results-message" style="display: none;">
                 <p>По вашему запросу ничего не найдено. Попробуйте изменить параметры фильтрации.</p>
@@ -600,19 +701,56 @@
         </div>
     </section>
     <footer class="footer">
-        <div class="container">
-            <div class="social-links">
-                <a href="#"><i class="fab fa-vk"></i></a>
-                <a href="#"><i class="fab fa-telegram"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+    <div class="container">
+        <div class="footer-grid">
+            <!-- Лого и описание -->
+            <div class="footer-brand">
+                <div class="logo">Туризм <span>России</span></div>
+                <p class="footer-description">Открываем для вас самые удивительные уголки нашей страны</p>
             </div>
-            <p>© 2025 Туризм России. Все права защищены.</p>
-            <p>Путешествуйте с удовольствием!</p>
+
+            <!-- Быстрые ссылки -->
+            <div class="footer-links">
+                <h4>Навигация</h4>
+                <ul>
+                    <li><a href="main.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                    <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Регионы</a></li>
+                    <li><a href="tours.html"><i class="fas fa-chevron-right"></i> Туры</a></li>
+                    <li><a href="reviews.html"><i class="fas fa-chevron-right"></i> Отзывы</a></li>
+                    <li><a href="trends.html"><i class="fas fa-chevron-right"></i> Тренды</a></li>
+                </ul>
+            </div>
+
+            <!-- Контакты -->
+            <div class="footer-contacts">
+                <h4>Контакты</h4>
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <a href="tel:+79203299192">8 (920) 329-91-92</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:sofiaefimova083@gmail.com">sofiaefimova083@gmail.com</a>
+                </div>        
+                <!-- Социальные сети -->
+                <div class="social-links">
+                    <a href="#" class="social-btn vk" aria-label="ВКонтакте">
+                        <i class="fab fa-vk"></i>
+                    </a>
+                    <a href="#" class="social-btn tg" aria-label="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="#" class="social-btn wa" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
         </div>
+    </div>
     </footer>
     
     <script>
+        
         // Header scroll effect
 window.addEventListener('scroll', function() {
     const header = document.querySelector('.header');
@@ -669,43 +807,53 @@ window.addEventListener('scroll', function() {
 
 // Main tours filtering function
 function filterTours() {
-        const region = document.getElementById('region').value;
-        const type = document.getElementById('type').value;
-        const priceRange = document.getElementById('price').value;
-        
-        fetch(`/tours/filter?region=${region}&type=${type}&price=${priceRange}`)
-            .then(response => response.json())
-            .then(data => {
-                const grid = document.querySelector('.tours-grid');
-                grid.innerHTML = '';
-                
-                if (data.length === 0) {
-                    grid.innerHTML = `
-                        <div class="no-results-message">
-                            <p>По вашему запросу ничего не найдено</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                data.forEach(tour => {
-                    grid.innerHTML += `
-                        <div class="tour-card">
-                            <img src="/static/Img/${tour.image}" alt="${tour.name}">
-                            <div class="tour-card-content">
-                                <h3>${tour.name}</h3>
-                                <div class="meta">
-                                    <span><i class="fas fa-map-marker-alt"></i> ${tour.region}</span>
-                                    <span class="type">${tour.type || 'Экскурсионный'}</span>
-                                </div>
-                                <div class="price">${tour.price} руб.</div>
-                                <a href="/tour/${tour.id}" class="btn">Подробнее</a>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
+    const tours = document.querySelectorAll('.tour-card');
+    const noResultsMessage = document.getElementById('no-results');
+    
+    // If no tour cards exist at all, hide the message and return
+    if (tours.length === 0) {
+        noResultsMessage.style.display = 'none';
+        return;
     }
+    
+    const region = document.getElementById('region').value;
+    const type = document.getElementById('type').value;
+    const priceRange = document.getElementById('price').value;
+    
+    let visibleCount = 0;
+    
+    tours.forEach(tour => {
+        const tourRegion = tour.getAttribute('data-region');
+        const tourType = tour.getAttribute('data-type');
+        const tourPrice = parseInt(tour.getAttribute('data-price'));
+        
+        const regionMatch = region === 'all' || tourRegion === region;
+        const typeMatch = type === 'all' || tourType === type;
+        
+        let priceMatch = false;
+        if (priceRange === 'all') {
+            priceMatch = true;
+        } else if (priceRange === '0-40000') {
+            priceMatch = tourPrice <= 40000;
+        } else if (priceRange === '40000-50000') {
+            priceMatch = tourPrice > 40000 && tourPrice <= 50000;
+        } else if (priceRange === '50000-70000') {
+            priceMatch = tourPrice > 50000 && tourPrice <= 70000;
+        } else if (priceRange === '70000+') {
+            priceMatch = tourPrice > 70000;
+        }
+        
+        if (regionMatch && typeMatch && priceMatch) {
+            tour.style.display = 'block';
+            visibleCount++;
+        } else {
+            tour.style.display = 'none';
+        }
+    });
+    
+    // Show message only if there are cards but none matched filters
+    noResultsMessage.style.display = (visibleCount === 0 && tours.length > 0) ? 'block' : 'none';
+}
 
 // Animation on scroll for tour cards
 function animateCards() {
