@@ -20,9 +20,10 @@ class Tour(db.Model):
     description = db.Column(db.Text)
     price = db.Column(db.Float)
     duration = db.Column(db.String(50))
-    image = db.Column(db.String(100))
+    image = db.Column(db.String(300))
     places = db.Column(db.Text)
-    region = db.Column(db.String(50))  # Добавьте это поле
-    type = db.Column(db.String(50))   # Добавьте это поле
+    region = db.Column(db.String(50))  
+    type = db.Column(db.String(50))
+       
     
     reviews = db.relationship('Review', backref='tour', lazy=True)

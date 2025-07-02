@@ -689,69 +689,45 @@
             </div>
 
             <div class="tour-detail-grid">
-                <div class="tour-gallery">
-                    <div class="main-image">
-                        <img src="" alt="Изображение тура" id="main-image">
+                <div class="tour-container">
+                    <div class="tour-header">
+                        <h1>{{ tour.name }}</h1>
+                        <div class="tour-meta">
+                            <span class="price">{{ tour.price }} руб.</span>
+                            <span class="duration">{{ tour.duration }}</span>
+                        </div>
                     </div>
-                    <div class="thumbnails" id="thumbnails-container">
-                        <!-- Thumbnails will be added dynamically -->
+                    
+                    <div class="tour-gallery">
+                        <img src="{{ url_for('static', filename='Img/' + tour.image) }}" alt="{{ tour.name }}">
                     </div>
-                </div>
-
-                <div class="tour-info">
-
-                    <h2>Описание тура</h2>
-                    <p id="tour-description">Загрузка описания...</p>
-
-                    <h2>Программа тура</h2>
-                    <div id="tour-program" class="tour-program">
-                        <!-- Program days will be added dynamically -->
+                    
+                    <div class="tour-description">
+                        <h2>Описание тура</h2>
+                        <p>{{ tour.description }}</p>
                     </div>
-
-                    <h2>Включено в стоимость</h2>
-                    <ul id="tour-includes" class="tour-includes">
-                        <!-- Included items will be added dynamically -->
-                    </ul>
-
-                    <div class="tour-actions">
-                        <a href="reviews.html?tour=${currentTour.id}" class="btn btn-secondary">Посмотреть отзывы</a>
+                    
+                    <div class="tour-places">
+                        <h2>Основные места посещения</h2>
+                        <ul>
+                            {% for place in tour.places.split(';') %}
+                            <li>{{ place }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
-
-                    <div class="booking-form" id="booking-form" style="display: none;">
-                        <h3>Забронировать тур</h3>
-                        <form id="tour-booking-form">
-                            <div class="form-group">
-                                <label for="name">Ваше имя</label>
-                                <input type="text" id="name" name="name" required>
+                    
+                    <div class="related-tours">
+                        <h2>Похожие туры</h2>
+                        <div class="tours-grid">
+                            {% for tour in related_tours %}
+                            <div class="tour-card">
+                                <a href="{{ url_for('main.tour_detail', tour_id=tour.id) }}">
+                                    <img src="{{ url_for('static', filename='Img/' + tour.image) }}" alt="{{ tour.name }}">
+                                    <h3>{{ tour.name }}</h3>
+                                </a>
                             </div>
-                            <div class="form-group">
-                                <label for="phone">Телефон</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="date">Дата тура</label>
-                                <input type="date" id="date" name="date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="persons">Количество человек</label>
-                                <select id="persons" name="persons">
-                                    <option value="1">1</option>
-                                    <option value="2" selected>2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5+">5+</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="comments">Дополнительные пожелания</label>
-                                <textarea id="comments" name="comments" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Отправить заявку</button>
-                        </form>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

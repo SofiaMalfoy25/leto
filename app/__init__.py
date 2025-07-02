@@ -1,21 +1,26 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from config import Config  # Добавьте этот импорт
 
 db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)  # Загружаем конфиг из класса
     
+    # Явно загружаем конфигурацию
+    app.config.from_object('config.Config')
+    
+    # Проверка загрузки конфигурации
+    if not app.config.get('SQLALCHEMY_DATABASE_URI'):
+        raise ValueError("Database URI not configured!")
+    
+    # Инициализация расширений
     db.init_app(app)
     migrate.init_app(app, db)
     
-    from . import models
-    
+    # Импорт и регистрация blueprint
     from .routes import bp
-    app.register_blueprint(bp, url_prefix='/')
+    app.register_blueprint(bp)
     
     return app

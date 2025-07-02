@@ -478,7 +478,7 @@
                 <p>Путешествуйте по самым красивым местам нашей необъятной страны - от древних городов до величественных горных вершин</p>
                 <div class="hero-buttons">
                     <a href="/tours" class="btn">Найти тур</a>
-                    <a href="blog.html" class="btn btn-outline">Исследовать регионы</a>
+                    <a href="/blog" class="btn btn-outline">Исследовать регионы</a>
                 </div>
             </div>
         </section>
@@ -760,7 +760,7 @@
                 
                 switch(tour.id) {
                     case '1': // Золотое кольцо
-                        imageSrc = 'Img/goldring.png';
+                        imageSrc = "{{ url_for('static', filename='Img/zapad.jpg') }}";
                         break;
                     case '8': // Байкал
                         imageSrc = 'Img/байкал.png';

@@ -569,7 +569,30 @@
         <div class="container">
             <h2 class="section-title">Наши туры</h2>
             <div class="tours-grid">
-                <!-- Туры будут загружаться через JavaScript -->
+                {% for tour in tours %}
+                <div class="tour-card" 
+                    data-region="{{ tour.region|lower }}"
+                    data-type="{{ tour.type|default('excursion')|lower }}"
+                    data-price="{{ tour.price }}">
+                    <img src="{{ url_for('static', filename='Img/' + tour.image) }}" alt="{{ tour.name }}">
+                    <div class="tour-card-content">
+                        <h3>{{ tour.name }}</h3>
+                        <div class="meta">
+                            <span><i class="fas fa-map-marker-alt"></i> {{ tour.region }}</span>
+                            <span class="type">{{ tour.type|default('Экскурсионный') }}</span>
+                        </div>
+                        <div class="description">
+                            {{ tour.description|truncate(120) }}
+                        </div>
+                        <div class="price">{{ tour.price|int }} руб.</div>
+                        <a href="{{ url_for('main.tour_detail', tour_id=tour.id) }}" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="no-results-message">
+                    <p>Туры не найдены</p>
+                </div>
+                {% endfor %}
             </div>
             <div id="no-results" class="no-results-message" style="display: none;">
                 <p>По вашему запросу ничего не найдено. Попробуйте изменить параметры фильтрации.</p>
@@ -646,46 +669,43 @@ window.addEventListener('scroll', function() {
 
 // Main tours filtering function
 function filterTours() {
-    const tours = document.querySelectorAll('.tour-card');
-    const noResultsMessage = document.getElementById('no-results');
-    
-    const region = document.getElementById('region').value;
-    const type = document.getElementById('type').value;
-    const priceRange = document.getElementById('price').value;
-    
-    let visibleCount = 0;
-    
-    tours.forEach(tour => {
-        const tourRegion = tour.getAttribute('data-region');
-        const tourType = tour.getAttribute('data-type');
-        const tourPrice = parseFloat(tour.getAttribute('data-price'));
+        const region = document.getElementById('region').value;
+        const type = document.getElementById('type').value;
+        const priceRange = document.getElementById('price').value;
         
-        const regionMatch = region === 'all' || tourRegion.toLowerCase().includes(region);
-        const typeMatch = type === 'all' || tourType.toLowerCase().includes(type);
-        
-        let priceMatch = false;
-        if (priceRange === 'all') {
-            priceMatch = true;
-        } else if (priceRange === '0-40000') {
-            priceMatch = tourPrice <= 40000;
-        } else if (priceRange === '40000-50000') {
-            priceMatch = tourPrice > 40000 && tourPrice <= 50000;
-        } else if (priceRange === '50000-70000') {
-            priceMatch = tourPrice > 50000 && tourPrice <= 70000;
-        } else if (priceRange === '70000+') {
-            priceMatch = tourPrice > 70000;
-        }
-        
-        if (regionMatch && typeMatch && priceMatch) {
-            tour.style.display = 'block';
-            visibleCount++;
-        } else {
-            tour.style.display = 'none';
-        }
-    });
-    
-    noResultsMessage.style.display = visibleCount === 0 ? 'block' : 'none';
-}
+        fetch(`/tours/filter?region=${region}&type=${type}&price=${priceRange}`)
+            .then(response => response.json())
+            .then(data => {
+                const grid = document.querySelector('.tours-grid');
+                grid.innerHTML = '';
+                
+                if (data.length === 0) {
+                    grid.innerHTML = `
+                        <div class="no-results-message">
+                            <p>По вашему запросу ничего не найдено</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                data.forEach(tour => {
+                    grid.innerHTML += `
+                        <div class="tour-card">
+                            <img src="/static/Img/${tour.image}" alt="${tour.name}">
+                            <div class="tour-card-content">
+                                <h3>${tour.name}</h3>
+                                <div class="meta">
+                                    <span><i class="fas fa-map-marker-alt"></i> ${tour.region}</span>
+                                    <span class="type">${tour.type || 'Экскурсионный'}</span>
+                                </div>
+                                <div class="price">${tour.price} руб.</div>
+                                <a href="/tour/${tour.id}" class="btn">Подробнее</a>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+    }
 
 // Animation on scroll for tour cards
 function animateCards() {
